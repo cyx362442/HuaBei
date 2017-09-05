@@ -1,0 +1,39 @@
+<resources>
+    <string name="app_name">爱花呗</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="noticeDialog">消息公告</string>
+    <string name="update">版本更新</string>
+
+    <string name="registerAgreement">爱花呗支付注册协议</string>
+    <string name="serverAgreement">爱花呗服务协议</string>
+
+    <style name="audit">己审核</style>
+
+    <string name="account">账号</string>
+
+    <style name="password">密码</style>
+
+    <string name="name">姓名</string>
+    <string name="message">消息</string>
+    <string name="dialog">对话框</string>
+    <string name="dialogMsg">您的资料还未完善，无法进行支付，请先完善个人资料！</string>
+
+    <string name="camera_open_error">打开相机失败</string>
+    <string name="import_img">导入图片</string>
+    <string name="take_photo">拍照</string>
+    <string name="loading">正在加载请稍后!!!</string>
+    <string name="photo_too_lage">图片太大！</string>
+    <string name="no_sdcard">无sdcard！</string>
+    <string name="takephoto_fail">拍照失败</string>
+
+    <string name="imageName">图片名称</string>
+    <string name="idfront">idfront.jpg</string>
+    <string name="idreverse">idreverse.jpg</string>
+    <string name="bankfront">bankfront.jpg</string>
+    <string name="bankreverse">bankreverse.jpg</string>
+    <string name="idcommit">身份证提交</string>
+    <string name="bankcommit">银行卡提交</string>
+</resources>

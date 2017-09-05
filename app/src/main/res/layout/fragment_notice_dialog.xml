@@ -1,0 +1,25 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context="fragment.NoticeDialog">
+    <WebView
+        android:id="@+id/wv"
+        android:layout_width="match_parent"
+        android:layout_height="160dp"
+        android:layout_margin="5dp"
+        >
+    </WebView>
+
+    <TextView
+        android:id="@+id/tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/wv"
+        android:background="@color/blue_low"
+        android:gravity="center"
+        android:padding="5dp"
+        android:text="知道了"
+        android:textColor="@color/white"
+        android:textSize="20dp"/>
+</RelativeLayout>
