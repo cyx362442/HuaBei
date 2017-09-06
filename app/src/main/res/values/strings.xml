@@ -36,4 +36,5 @@
     <string name="bankreverse">bankreverse.jpg</string>
     <string name="idcommit">身份证提交</string>
     <string name="bankcommit">银行卡提交</string>
+    <string name="groupimage">人卡合影</string>
 </resources>
