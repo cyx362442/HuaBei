@@ -21,7 +21,11 @@ import com.zhongbang.huabei.R;
 import com.zhongbang.huabei.fragment.dialog.GroupImageFragment;
 import com.zhongbang.huabei.http.UploadUtil;
 import com.zhongbang.huabei.utils.ShapreUtis;
+import com.zhongbang.huabei.utils.ToastUtil;
 import com.zhongbang.huabei.yunmai.CameraManager;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -97,6 +101,14 @@ public class GroupPhotoActivity extends AppCompatActivity {
                     public void run() {
                         try {
                             String post = UploadUtil.post(urlCommit, map, mapFiles);
+                            try {
+                                JSONObject jsonObject = new JSONObject(post);
+                                String code = jsonObject.getString("code");
+                                String msg = jsonObject.getString("msg");
+                                ToastUtil.showShort(GroupPhotoActivity.this,msg);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
