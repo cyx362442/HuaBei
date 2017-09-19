@@ -67,6 +67,13 @@ public class IdCardFragment extends Fragment implements View.OnClickListener, Po
         return inflate;
     }
 
+    public void setIDFrontImg(String imgUrl){
+        Glide.with(getActivity()).load(imgUrl).into(mImgIDFront);
+    }
+    public void setIDReverseImg(String imgUrl){
+        Glide.with(getActivity()).load(imgUrl).into(mImgIDReverse);
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

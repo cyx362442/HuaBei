@@ -6,18 +6,26 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.android.volley.VolleyError;
+import com.baidu.platform.comapi.map.D;
+import com.google.gson.Gson;
 import com.zhongbang.huabei.R;
+import com.zhongbang.huabei.bean.CommitUser;
 import com.zhongbang.huabei.event.ID_Front;
 import com.zhongbang.huabei.event.StartAnim;
 import com.zhongbang.huabei.fragment.IdCardFragment;
+import com.zhongbang.huabei.http.DownHTTP;
 import com.zhongbang.huabei.http.UploadUtil;
+import com.zhongbang.huabei.http.VolleyResultListener;
 import com.zhongbang.huabei.region.RegionSelectActivity;
 import com.zhongbang.huabei.utils.DBCopyUtil;
+import com.zhongbang.huabei.utils.MD5Utils;
 import com.zhongbang.huabei.utils.ShapreUtis;
 import com.zhongbang.huabei.utils.ToastUtil;
 import com.zhongbang.huabei.yunmai.CameraManager;
@@ -60,9 +68,11 @@ public class RenZhengActivity extends AppCompatActivity {
     private String mCity;
     private String mArea;
 
+    private final String urlUsers="http://chinaqmf.cn:8088/ihuabei/app/user/userInfo.app";
     private final String urlCommit = " http://chinaqmf.cn:8088/ihuabei/app/user/submitUserData.app";
     private String mAccount;
     private HashMap<String, String> mMap;
+    private IdCardFragment mIdCardFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,9 +82,41 @@ public class RenZhengActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         mMap = new HashMap<>();
         ShapreUtis shapreUtis = ShapreUtis.getInstance(this);
+        String audit = shapreUtis.getAudit();
+        String name = shapreUtis.getName();
         mAccount = shapreUtis.getAccount();
         mTvTitle.setText("实名认证 ");
         initFragment();
+        if(!getString(R.string.unaudit).equals(audit)){
+            Http_User(name);
+        }
+    }
+
+    private void Http_User(String name) {
+        HashMap<String,String> map = new HashMap<>();
+        map.put("username",mAccount);
+        map.put("name",name);
+        String md5="name="+name+"&username="+mAccount;
+        map.put("sign", MD5Utils.setMD5(md5));
+        DownHTTP.postVolley(urlUsers, map, new VolleyResultListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+            @Override
+            public void onResponse(String response) {
+                Gson gson = new Gson();
+                CommitUser user = gson.fromJson(response, CommitUser.class);
+                CommitUser.DataBean data = user.getData();
+                mEtName.setText(data.getName());
+                mEtIdcardfront.setText(data.getIdNumber());
+                mEtIdcardreverse.setText(data.getIdcardExpireDate());
+                mEtMerchant.setText(data.getMerchantName());
+                mEtCity.setText(data.getProvince()+data.getCity());
+                mEtAddress.setText(data.getAddress());
+                mIdCardFragment.setIDFrontImg(data.getIdcardFrontImg());
+                mIdCardFragment.setIDReverseImg(data.getIdcardBackImg());
+            }
+        });
     }
 
     @Override
@@ -89,9 +131,10 @@ public class RenZhengActivity extends AppCompatActivity {
     }
 
     private void initFragment() {
+        mIdCardFragment = new IdCardFragment();
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        ft.replace(R.id.fragment_card, new IdCardFragment()).commit();
+        ft.replace(R.id.fragment_card, mIdCardFragment).commit();
     }
 
     @Subscribe

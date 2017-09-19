@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -91,7 +92,7 @@ public class GroupPhotoActivity extends AppCompatActivity {
                 fragment.show(getFragmentManager(),getString(R.string.groupimage));
                 break;
             case R.id.btn_commit:
-                File file = new File(strDir, "group.jpg");
+                final File file = new File(strDir, "group.jpg");
                 final HashMap<String, String> map = new HashMap<>();
                 map.put("username",mAccount);
                 final Map<String, File> mapFiles = new HashMap<String, File>();
@@ -101,15 +102,16 @@ public class GroupPhotoActivity extends AppCompatActivity {
                     public void run() {
                         try {
                             String post = UploadUtil.post(urlCommit, map, mapFiles);
-                            try {
-                                JSONObject jsonObject = new JSONObject(post);
-                                String code = jsonObject.getString("code");
-                                String msg = jsonObject.getString("msg");
-                                ToastUtil.showShort(GroupPhotoActivity.this,msg);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
+                            JSONObject jsonObject = new JSONObject(post);
+                            String code = jsonObject.getString("code");
+                            String msg = jsonObject.getString("msg");
+                            ToastUtil.showShort(GroupPhotoActivity.this,msg);
+                            if("1".equals(code)){
+                                finish();
                             }
                         } catch (IOException e) {
+                            e.printStackTrace();
+                        } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }

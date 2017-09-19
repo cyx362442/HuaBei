@@ -15,7 +15,9 @@
     <string name="account">账号</string>
 
     <style name="password">密码</style>
-
+    
+    <string name="unaudit">未审核</string>
+    <string name="myaudit">状态</string>
     <string name="name">姓名</string>
     <string name="message">消息</string>
     <string name="dialog">对话框</string>

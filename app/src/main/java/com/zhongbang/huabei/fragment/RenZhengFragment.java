@@ -3,6 +3,7 @@ package com.zhongbang.huabei.fragment;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -76,6 +77,8 @@ public class RenZhengFragment extends Fragment {
                 User user = users[0];
                 AUDIT=user.getAudit();
                 mMapFragment.setName(user.getName());
+                mShapreUtis.setAudit(AUDIT);
+                mShapreUtis.setName(user.getName());
             }
         });
     }

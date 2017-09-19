@@ -47,4 +47,12 @@ public class ShapreUtis {
     public String getName(){
         return sp.getString(App.getContext().getString(R.string.name),"");
     }
+
+    public void setAudit(String audit){
+        editor.putString(App.getContext().getString(R.string.myaudit),audit);
+        editor.commit();
+    }
+    public String getAudit(){
+        return sp.getString(App.getContext().getString(R.string.myaudit),"");
+    }
 }
