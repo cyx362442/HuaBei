@@ -6,25 +6,30 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.android.volley.VolleyError;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.gson.Gson;
 import com.zhongbang.huabei.R;
+import com.zhongbang.huabei.bean.CommitGroup;
+import com.zhongbang.huabei.event.FinishEvent;
 import com.zhongbang.huabei.fragment.dialog.GroupImageFragment;
+import com.zhongbang.huabei.http.DownHTTP;
 import com.zhongbang.huabei.http.UploadUtil;
+import com.zhongbang.huabei.http.VolleyResultListener;
+import com.zhongbang.huabei.utils.MD5Utils;
 import com.zhongbang.huabei.utils.ShapreUtis;
 import com.zhongbang.huabei.utils.ToastUtil;
-import com.zhongbang.huabei.yunmai.CameraManager;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -45,11 +50,17 @@ public class GroupPhotoActivity extends AppCompatActivity {
     TextView mTvTitle;
     @BindView(R.id.img_group)
     ImageView mImgGroup;
+    @BindView(R.id.tv_msg)
+    TextView mTvMsg;
+    @BindView(R.id.btn_commit)
+    Button mBtnCommit;
     private String mAccount;
 
-    private final String urlCommit="http://chinaqmf.cn:8088/ihuabei/app/user/submitHandCardImg.app";
-    public static int TAKE_PHOTO_REQUEST_CODE=100;
-    public static final String strDir= Environment.getExternalStorageDirectory()+"/zhongbang/";
+    private final String urlGroup = "http://chinaqmf.cn:8088/ihuabei/app/user/securityVerifyInfo.app";
+    private final String urlCommit = "http://chinaqmf.cn:8088/ihuabei/app/user/submitHandCardImg.app";
+    public static int TAKE_PHOTO_REQUEST_CODE = 100;
+    public static final String strDir = Environment.getExternalStorageDirectory() + "/zhongbang/";
+    private String mAudit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,12 +71,42 @@ public class GroupPhotoActivity extends AppCompatActivity {
 
         ShapreUtis shapreUtis = ShapreUtis.getInstance(this);
         mAccount = shapreUtis.getAccount();
+        String name = shapreUtis.getName();
+        mAudit = shapreUtis.getAudit();
+        if (!getString(R.string.unaudit).equals(mAudit)) {
+            Http_Group(name);
+        }
+        if (getString(R.string.audited).equals(mAudit)) {
+            mTvMsg.setText(getString(R.string.auditMsg));
+            mBtnCommit.setText("返回首页");
+        }
+    }
+
+    private void Http_Group(String name) {
+        HashMap<String, String> map = new HashMap<>();
+        map.put("username", mAccount);
+        map.put("name", name);
+        String str = "name=" + name + "&username=" + mAccount;
+        map.put("sign", MD5Utils.setMD5(str));
+        DownHTTP.postVolley(urlGroup, map, new VolleyResultListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+            @Override
+            public void onResponse(String response) {
+                Gson gson = new Gson();
+                CommitGroup group = gson.fromJson(response, CommitGroup.class);
+                Glide.with(GroupPhotoActivity.this).
+                        load(group.getData().getHandCardImg()).
+                        into(mImgGroup);
+            }
+        });
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==TAKE_PHOTO_REQUEST_CODE){
+        if (requestCode == TAKE_PHOTO_REQUEST_CODE) {
             final Bitmap bmp = getScaleBitmap(this, getTempImage().getPath());
             final File file = new File(strDir, "group.jpg");
             Glide.with(this).load(file).skipMemoryCache(true).
@@ -75,7 +116,7 @@ public class GroupPhotoActivity extends AppCompatActivity {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    compressBmpToFile(bmp,file);
+                    compressBmpToFile(bmp, file);
                 }
             }).start();
         }
@@ -89,14 +130,18 @@ public class GroupPhotoActivity extends AppCompatActivity {
                 break;
             case R.id.rl_group:
                 GroupImageFragment fragment = GroupImageFragment.newInstance();
-                fragment.show(getFragmentManager(),getString(R.string.groupimage));
+                fragment.show(getFragmentManager(), getString(R.string.groupimage));
                 break;
             case R.id.btn_commit:
+                if(getString(R.string.audited).equals(mAudit)){
+                    finish();
+                    EventBus.getDefault().post(new FinishEvent());
+                }
                 final File file = new File(strDir, "group.jpg");
                 final HashMap<String, String> map = new HashMap<>();
-                map.put("username",mAccount);
+                map.put("username", mAccount);
                 final Map<String, File> mapFiles = new HashMap<String, File>();
-                mapFiles.put("handCardImg",file);
+                mapFiles.put("handCardImg", file);
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -105,8 +150,8 @@ public class GroupPhotoActivity extends AppCompatActivity {
                             JSONObject jsonObject = new JSONObject(post);
                             String code = jsonObject.getString("code");
                             String msg = jsonObject.getString("msg");
-                            ToastUtil.showShort(GroupPhotoActivity.this,msg);
-                            if("1".equals(code)){
+                            ToastUtil.showShort(GroupPhotoActivity.this, msg);
+                            if ("1".equals(code)) {
                                 finish();
                             }
                         } catch (IOException e) {
@@ -121,8 +166,8 @@ public class GroupPhotoActivity extends AppCompatActivity {
     }
 
     public static File getTempImage() {
-        if (android.os.Environment.getExternalStorageState().equals(
-                android.os.Environment.MEDIA_MOUNTED)) {
+        if (Environment.getExternalStorageState().equals(
+                Environment.MEDIA_MOUNTED)) {
             File tempFile = new File(strDir, "group.jpg");
             try {
                 tempFile.createNewFile();
@@ -160,7 +205,8 @@ public class GroupPhotoActivity extends AppCompatActivity {
         bmp = BitmapFactory.decodeFile(filePath, opt);
         return bmp;
     }
-    public static void compressBmpToFile(Bitmap bmp,File file){
+
+    public static void compressBmpToFile(Bitmap bmp, File file) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         int options = 80;//个人喜欢从80开始,
         bmp.compress(Bitmap.CompressFormat.JPEG, options, baos);

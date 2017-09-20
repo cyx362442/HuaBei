@@ -109,6 +109,13 @@ public class BankFragment extends Fragment implements View.OnClickListener, Popu
         }
     }
 
+    public void setBankFrontImg(String url){
+        Glide.with(getActivity()).load(url).into(mImgBankfront);
+    }
+    public void setImgBankreverseImg(String url){
+        Glide.with(getActivity()).load(url).into(mImgBankreverse);
+    }
+
     /**
      * 根据路径获取文件扩展名
      * @param path

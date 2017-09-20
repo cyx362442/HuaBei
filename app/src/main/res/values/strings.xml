@@ -15,13 +15,15 @@
     <string name="account">账号</string>
 
     <style name="password">密码</style>
-    
+
+    <string name="audited">已审核</string>
     <string name="unaudit">未审核</string>
     <string name="myaudit">状态</string>
     <string name="name">姓名</string>
     <string name="message">消息</string>
     <string name="dialog">对话框</string>
     <string name="dialogMsg">您的资料还未完善，无法进行支付，请先完善个人资料！</string>
+    <string name="auditMsg">恭喜，您的账号己审核通过</string>
 
     <string name="camera_open_error">打开相机失败</string>
     <string name="import_img">导入图片</string>

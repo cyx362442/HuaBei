@@ -13,12 +13,13 @@
         <include
             layout="@layout/top_title_item"></include>
         <TextView
+            android:id="@+id/msg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
             android:text="请将身份证放置在识别框,请勿倾斜,并保证对焦无反光。"
             android:textColor="@color/colorAccent"
-            android:padding="5dp"
+            android:padding="8dp"
             />
         <ScrollView
             android:layout_width="match_parent"

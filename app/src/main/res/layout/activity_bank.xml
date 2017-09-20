@@ -13,12 +13,13 @@
         <include
             layout="@layout/top_title_item"></include>
         <TextView
+            android:id="@+id/tv_msg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
             android:text="您上传的储蓄卡是用于提现到账，请选择有效储蓄卡，并认真核对信息，以免影响提现到账。"
             android:textColor="@color/colorAccent"
-            android:padding="5dp"
+            android:padding="8dp"
             />
         <ScrollView
             android:layout_width="match_parent"
@@ -103,7 +104,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="请核对您的银行卡号和所属银行，若有错误请点击上图重新拍照上传，建议输入支行名称后先查询支行编码再进行下一步操作，若未找到支行纺码请检查支行名称是否输入有误。"/>
+                        android:text="请核对您的银行卡号和所属银行，若有错误请点击上图重新拍照上传，建议输入支行名称后先查询支行编码再进行下一步操作，若未找到支行编码请检查支行名称是否输入有误。"/>
                 </LinearLayout>
                 <Button
                     android:id="@+id/btn_next"

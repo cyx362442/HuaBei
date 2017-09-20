@@ -9,24 +9,25 @@
     <include
         layout="@layout/top_title_item"></include>
     <TextView
+        android:id="@+id/tv_msg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:padding="10dp"
+        android:padding="8dp"
         android:text="提交安全支付认证，方可使用支付功能"
         android:textColor="@color/colorAccent"/>
     <RelativeLayout
         android:id="@+id/rl_group"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
         android:layout_gravity="center"
         android:background="@drawable/shape_img_card">
         <ImageView
             android:id="@+id/img_group"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:scaleType="fitXY"
             android:padding="1dp"
             android:src="@mipmap/idcard"/>
         <ImageView
@@ -34,19 +35,19 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:src="@mipmap/id_reverse"/>
+    </RelativeLayout>
         <TextView
             android:id="@+id/tv"
-            android:layout_width="match_parent"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
             android:gravity="center"
-            android:layout_below="@+id/img_group"
-            android:layout_alignLeft="@+id/img_group"
-            android:layout_alignRight="@+id/img_group"
+            android:layout_gravity="center_horizontal"
+            android:layout_below="@+id/rl_group"
             android:background="#666666"
             android:text="可重新扫描"
             android:textColor="@color/white"
             android:padding="2dp"/>
-    </RelativeLayout>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
