@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity{
                             Intent intent = new Intent(MainActivity.this, RenZhengActivity.class);
                             startActivity(intent);
                             isClick=false;
+
                         }else{
                             mTabHost.setCurrentTab(index);
                             isClick=true;
