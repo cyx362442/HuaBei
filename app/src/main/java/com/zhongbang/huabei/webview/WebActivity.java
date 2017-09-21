@@ -27,6 +27,7 @@ public class WebActivity extends AppCompatActivity implements View.OnClickListen
         String url = intent.getStringExtra("url");
         String registerAgreement = intent.getStringExtra(getString(R.string.registerAgreement));
         String serverAgreement = intent.getStringExtra(getString(R.string.serverAgreement));
+        String webTitle = intent.getStringExtra(getString(R.string.webtitle));
 
         mWv = (WebView) findViewById(R.id.webview);
         mPb = (ProgressBar) findViewById(R.id.progress);
@@ -47,6 +48,8 @@ public class WebActivity extends AppCompatActivity implements View.OnClickListen
             tvTitle.setText(registerAgreement);
         }else if(!TextUtils.isEmpty(serverAgreement)){
             tvTitle.setText(serverAgreement);
+        }else if(!TextUtils.isEmpty(webTitle)){
+            tvTitle.setText(webTitle);
         }
     }
 

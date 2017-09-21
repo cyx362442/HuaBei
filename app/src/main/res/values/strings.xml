@@ -9,6 +9,7 @@
 
     <string name="registerAgreement">爱花呗支付注册协议</string>
     <string name="serverAgreement">爱花呗服务协议</string>
+    <string name="webtitle">webView标题</string>
 
     <style name="audit">己审核</style>
 

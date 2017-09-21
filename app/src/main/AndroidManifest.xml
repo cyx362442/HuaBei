@@ -79,6 +79,8 @@
         </activity>
         <activity android:name=".app.GroupPhotoActivity">
         </activity>
+        <activity android:name=".app.CollectionActivity">
+        </activity>
     </application>
 
 </manifest>
