@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import com.zhongbang.huabei.R;
 import com.zhongbang.huabei.app.CollectionActivity;
+import com.zhongbang.huabei.app.ShareGoodsActivity;
 import com.zhongbang.huabei.fragment.dialog.ConfirmDialogFragment;
 import com.zhongbang.huabei.utils.ShapreUtis;
 
@@ -24,6 +25,7 @@ public class MainFragmentTop extends Fragment {
     Unbinder unbinder;
     private String mAudit;
     private ConfirmDialogFragment mDialogFragment;
+    private Intent mIntent;
 
     public MainFragmentTop() {
         // Required empty public constructor
@@ -55,10 +57,12 @@ public class MainFragmentTop extends Fragment {
 //        }
         switch (view.getId()) {
             case R.id.ll_top1:
-                Intent intent = new Intent(getActivity(), CollectionActivity.class);
-                startActivity(intent);
+                mIntent = new Intent(getActivity(), CollectionActivity.class);
+                startActivity(mIntent);
                 break;
             case R.id.ll_top2:
+                mIntent = new Intent(getActivity(), ShareGoodsActivity.class);
+                startActivity(mIntent);
                 break;
         }
     }

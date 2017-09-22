@@ -81,6 +81,8 @@
         </activity>
         <activity android:name=".app.CollectionActivity">
         </activity>
+        <activity android:name=".app.ShareGoodsActivity">
+        </activity>
     </application>
 
 </manifest>
