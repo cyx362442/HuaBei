@@ -1,9 +1,13 @@
 package com.zhongbang.huabei.app;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.text.TextUtils;
@@ -17,6 +21,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.Target;
 import com.zhongbang.huabei.R;
 import com.zhongbang.huabei.event.Dismiss;
 import com.zhongbang.huabei.fragment.NoticeDialog;
@@ -32,7 +38,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.concurrent.ExecutionException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -58,8 +69,10 @@ public class LoginActivity extends AppCompatActivity{
 
     private boolean isShow=false;
     private final String urlLand="http://chinaqmf.cn/app/landing.aspx";
+    private final String urlLogo="http://7xpj8w.com1.z0.glb.clouddn.com/logo80.png";
     private Intent mIntent;
     private ShapreUtis mShapreUtis;
+    private File currentFile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +90,28 @@ public class LoginActivity extends AppCompatActivity{
             mEtAccount.setText(account);
         }
         Http_checkVersion();
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Bitmap bitmap = Glide.with(LoginActivity.this)
+                            .load(urlLogo)
+                            .asBitmap()
+                            .into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
+                            .get();
+                    if (bitmap != null){
+                        // 在这里执行图片保存方法
+                        saveImageToGallery(bitmap);
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }).start();
     }
 
     private void Http_checkVersion() {
@@ -174,5 +209,37 @@ public class LoginActivity extends AppCompatActivity{
                 ToastUtil.showShort(LoginActivity.this,response);
             }
         });
+    }
+
+    public void saveImageToGallery(Bitmap bmp) {
+        // 首先保存图片
+        String strDir = Environment.getExternalStorageDirectory()+"/zhongbang/";
+        String fileName ="huabei.jpg";
+        File appDir = new File(strDir);
+        if (!appDir.exists()) {
+            appDir.mkdirs();
+        }
+        currentFile = new File(appDir, fileName);
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(currentFile);
+            bmp.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            fos.flush();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (fos != null) {
+                    fos.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        // 最后通知图库更新
+        this.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
+                Uri.fromFile(new File(currentFile.getPath()))));
     }
 }

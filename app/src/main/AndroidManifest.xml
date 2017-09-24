@@ -83,6 +83,14 @@
         </activity>
         <activity android:name=".app.ShareGoodsActivity">
         </activity>
+        <activity android:name=".app.ShareZxingActivity">
+        </activity>
+        <activity android:name=".app.ShareManageActivity">
+        </activity>
+        <activity android:name=".app.LocalOpenActivity">
+        </activity>
+        <activity android:name=".app.H5ShareActivity">
+        </activity>
     </application>
 
 </manifest>

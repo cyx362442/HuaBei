@@ -1,5 +1,6 @@
 package com.zhongbang.huabei.app;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -15,6 +16,7 @@ public class ShareGoodsActivity extends AppCompatActivity {
 
     @BindView(R.id.tv_title)
     TextView mTvTitle;
+    private Intent mIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,14 +33,22 @@ public class ShareGoodsActivity extends AppCompatActivity {
                 finish();
                 break;
             case R.id.rl1:
+                mIntent = new Intent(this, ShareZxingActivity.class);
+                startActivity(mIntent);
                 break;
             case R.id.rl2:
+                mIntent=new Intent(this,ShareManageActivity.class);
+                startActivity(mIntent);
                 break;
             case R.id.rl3:
+                mIntent=new Intent(this,LocalOpenActivity.class);
+                startActivity(mIntent);
                 break;
             case R.id.rl4:
                 break;
             case R.id.rl5:
+                mIntent=new Intent(this,H5ShareActivity.class);
+                startActivity(mIntent);
                 break;
         }
     }
