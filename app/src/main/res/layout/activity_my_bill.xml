@@ -1,0 +1,159 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#cdcdcd"
+    tools:context="com.zhongbang.huabei.app.main_center.MyBillActivity" >
+
+    <RelativeLayout
+android:id="@+id/relativeLayout1"
+android:layout_width="match_parent"
+android:layout_height="50dp"
+android:layout_alignParentLeft="true"
+android:layout_alignParentTop="true"
+android:background="#ffffff">
+
+<TextView
+android:id="@+id/textView1"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_centerHorizontal="true"
+android:layout_centerVertical="true"
+android:text="我的账单"
+android:textAppearance="?android:attr/textAppearanceLarge"
+android:textSize="20sp"/>
+
+<ImageView
+android:id="@+id/iv_back"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_centerVertical="true"
+android:src="@mipmap/back_black_normal"/>
+</RelativeLayout>
+
+    <ImageView
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:src="@mipmap/line1"/>
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/relativeLayout1"
+        android:background="#ffffff" >
+
+        <RelativeLayout
+            android:id="@+id/Relative_all"
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" >
+
+            <TextView
+                android:id="@+id/TextView05"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:gravity="center"
+                android:text="全部"
+                android:textColor="#000" />
+
+            <TextView
+                android:id="@+id/Tv_all"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:background="#ff6633" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/Relative_yishouru"
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" >
+
+            <TextView
+                android:id="@+id/Tv_yishouru"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:background="#ff6633"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/TextView03"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:gravity="center"
+                android:text="已收入"
+                android:textColor="#000" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/ralative_jinxingzhong"
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" >
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:gravity="center"
+                android:text="进行中"
+                android:textColor="#000" />
+
+            <TextView
+                android:id="@+id/Tv_tixinaliushui"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:background="#ff6633"
+                android:visibility="gone" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/ralative_tixianjilu"
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" >
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:gravity="center"
+                android:text="提现纪录"
+                android:textColor="#000" />
+
+            <TextView
+                android:id="@+id/Tv_tixianjilu"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:background="#ff6633"
+                android:visibility="gone" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <com.zhongbang.huabei.view.CustomViewPager
+        android:id="@+id/Viewpager_bill"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/linearLayout1"
+        android:layout_marginTop="5dp"
+        android:background="#ffffff"/>
+</LinearLayout>

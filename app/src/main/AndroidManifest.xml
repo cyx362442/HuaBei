@@ -91,6 +91,16 @@
         </activity>
         <activity android:name=".app.H5ShareActivity">
         </activity>
+        <activity android:name=".app.main_center.MyComeinActivity">
+        </activity>
+        <activity android:name=".app.main_center.MyBillActivity">
+        </activity>
+        <activity android:name=".app.main_center.TxDetailActivity">
+        </activity>
+        <activity android:name=".app.main_center.BalanceActivity">
+        </activity>
+        <activity android:name=".app.main_center.ToBalanceActivity">
+        </activity>
     </application>
 
 </manifest>
