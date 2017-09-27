@@ -39,22 +39,28 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".app.GuideActivity">
+        <activity android:name=".app.GuideActivity"
+                  android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".app.LoginActivity">
+        <activity android:name=".app.LoginActivity"
+                  android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".app.RegisterActivity">
+        <activity android:name=".app.RegisterActivity"
+                  android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".webview.WebActivity">
+        <activity android:name=".webview.WebActivity"
+                  android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".app.MainActivity">
+        <activity android:name=".app.MainActivity"
+                  android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".app.ForgetActivity">
+        <activity android:name=".app.ForgetActivity"
+                  android:screenOrientation="portrait">
         </activity>
 
         <meta-data
@@ -77,31 +83,44 @@
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".app.GroupPhotoActivity">
+        <activity android:name=".app.GroupPhotoActivity"
+                  android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".app.CollectionActivity">
+        <activity android:name=".app.CollectionActivity"
+                  android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".app.ShareGoodsActivity">
+        <activity android:name=".app.ShareGoodsActivity"
+                  android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".app.ShareZxingActivity">
+        <activity android:name=".app.ShareZxingActivity"
+                  android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".app.ShareManageActivity">
+        <activity android:name=".app.ShareManageActivity"
+                  android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".app.LocalOpenActivity">
+        <activity android:name=".app.LocalOpenActivity"
+                  android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".app.H5ShareActivity">
+        <activity android:name=".app.H5ShareActivity"
+                  android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".app.main_center.MyComeinActivity">
+        <activity android:name=".app.main_center.MyComeinActivity"
+                  android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".app.main_center.MyBillActivity">
+        <activity android:name=".app.main_center.MyBillActivity"
+                  android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".app.main_center.TxDetailActivity">
+        <activity android:name=".app.main_center.TxDetailActivity"
+                  android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".app.main_center.BalanceActivity">
+        <activity android:name=".app.main_center.BalanceActivity"
+                  android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".app.main_center.ToBalanceActivity">
+        <activity android:name=".app.main_center.ToBalanceActivity"
+                  android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".app.main_center.OfficalActivity">
+        <activity android:name=".app.main_center.OfficalActivity"
+                  android:screenOrientation="portrait">
         </activity>
     </application>
 

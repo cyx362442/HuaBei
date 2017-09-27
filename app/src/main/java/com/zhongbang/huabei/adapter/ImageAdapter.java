@@ -1,12 +1,10 @@
 package com.zhongbang.huabei.adapter;
 
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.zhongbang.huabei.R;
@@ -30,7 +28,6 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHold>{
         View inflate = mLayoutInflater.inflate(R.layout.image_item, null);
         ViewHold viewHold = new ViewHold(inflate);
         viewHold.mImageView= (ImageView) inflate.findViewById(R.id.image);
-        viewHold.mTextView= (TextView) inflate.findViewById(R.id.tv_url);
         return viewHold;
     }
 
@@ -38,7 +35,6 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHold>{
     public void onBindViewHolder(ViewHold holder, int position) {
         String img = imgs[position];
         Glide.with(App.getContext()).load(img).centerCrop().into(holder.mImageView);
-        holder.mTextView.setText(imgs[position]);
     }
 
     @Override
@@ -51,6 +47,5 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHold>{
             super(itemView);
         }
         ImageView mImageView;
-        TextView mTextView;
     }
 }
