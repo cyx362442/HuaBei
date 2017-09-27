@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import com.zhongbang.huabei.R;
 import com.zhongbang.huabei.app.main_center.MyBillActivity;
 import com.zhongbang.huabei.app.main_center.MyComeinActivity;
+import com.zhongbang.huabei.app.main_center.OfficalActivity;
 import com.zhongbang.huabei.utils.ShapreUtis;
 import com.zhongbang.huabei.webview.WebActivity;
 
@@ -71,7 +72,8 @@ public class MainFragmentCenter extends Fragment {
                 toWebView(mUrl,"我的团队");
                 break;
             case R.id.ll_center6:
-
+                mIntent=new Intent(getActivity(), OfficalActivity.class);
+                startActivity(mIntent);
                 break;
         }
     }

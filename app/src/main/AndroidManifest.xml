@@ -101,6 +101,8 @@
         </activity>
         <activity android:name=".app.main_center.ToBalanceActivity">
         </activity>
+        <activity android:name=".app.main_center.OfficalActivity">
+        </activity>
     </application>
 
 </manifest>
