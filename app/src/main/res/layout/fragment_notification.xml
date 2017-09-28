@@ -20,10 +20,10 @@
                     android:text="消息中心"
                     android:textSize="@dimen/dimen20"/>
             </RelativeLayout>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="@color/gray"></View>
+            <!--<View-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="2dp"-->
+                <!--android:background="@color/gray"></View>-->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
