@@ -98,7 +98,6 @@ public class OfficalActivity extends AppCompatActivity {
                 mTv2.setTextColor(getResources().getColor(R.color.blue_low));
                 mView2.setVisibility(View.VISIBLE);
                 mView1.setVisibility(View.INVISIBLE);
-
                 break;
         }
     }
