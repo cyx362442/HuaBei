@@ -1,13 +1,39 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
+              android:background="@color/white"
+              android:layout_marginBottom="5dp"
+              android:orientation="vertical"
              tools:context="com.zhongbang.huabei.fragment.NotificationFragment">
-
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/blue"
+                android:gravity="center">
+                <TextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:padding="8dp"
+                    android:text="消息中心"
+                    android:textSize="@dimen/dimen20"/>
+            </RelativeLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/gray"></View>
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="通知"/>
-
-</FrameLayout>
+        android:layout_height="match_parent">
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycleView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+            </android.support.v7.widget.RecyclerView>
+        <include
+            android:id="@+id/include"
+            layout="@layout/loading_item2"></include>
+    </RelativeLayout>
+</LinearLayout>
