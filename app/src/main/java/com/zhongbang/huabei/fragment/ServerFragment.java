@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.android.volley.VolleyError;
 import com.zhongbang.huabei.R;
+import com.zhongbang.huabei.app.ForgetActivity;
 import com.zhongbang.huabei.app.YijianfankuiActivity;
 import com.zhongbang.huabei.http.DownHTTP;
 import com.zhongbang.huabei.http.VolleyResultListener;
@@ -48,6 +49,7 @@ public class ServerFragment extends Fragment {
     private String mName;
     private View mViewLoad;
     private String mWebUrl;
+    private Intent mIntent;
 
     public ServerFragment() {
         // Required empty public constructor
@@ -125,8 +127,8 @@ public class ServerFragment extends Fragment {
                 toWebView(mWebUrl,"注册使用权");
                 break;
             case R.id.rl7:
-                Intent intent = new Intent(getActivity(), YijianfankuiActivity.class);
-                startActivity(intent);
+                mIntent = new Intent(getActivity(), YijianfankuiActivity.class);
+                startActivity(mIntent);
                 break;
             case R.id.rl8:
                 mViewLoad.setVisibility(View.VISIBLE);
@@ -144,9 +146,11 @@ public class ServerFragment extends Fragment {
                             JSONObject jsonObject = jsonArray.getJSONObject(0);
                             String systemVersion = jsonObject.getString("system_version");
                             String authorContact = jsonObject.getString("author_contact");
-                            if(Integer.parseInt(systemVersion)>getAppVersionName()){
+                            if(Float.parseFloat(systemVersion)>getAppVersionName()){
                                 UpdateFragment fragment = UpdateFragment.newInstance(authorContact);
                                 fragment.show(getActivity().getSupportFragmentManager(), getString(R.string.update));
+                            }else{
+                                ToastUtil.showShort(getActivity(),"当前己是最新版");
                             }
                             mViewLoad.setVisibility(View.GONE);
                         } catch (JSONException e) {
@@ -156,6 +160,8 @@ public class ServerFragment extends Fragment {
                 });
                 break;
             case R.id.rl9:
+                mIntent=new Intent(getActivity(), ForgetActivity.class);
+                startActivity(mIntent);
                 break;
             case R.id.btn_exit:
                 getActivity().finish();
