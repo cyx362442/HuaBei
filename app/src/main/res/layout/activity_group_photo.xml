@@ -1,92 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.zhongbang.huabei.app.GroupPhotoActivity">
-    <include
-        layout="@layout/top_title_item"></include>
-    <TextView
-        android:id="@+id/tv_msg"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:padding="8dp"
-        android:text="提交安全支付认证，方可使用支付功能"
-        android:textColor="@color/colorAccent"/>
-    <RelativeLayout
-        android:id="@+id/rl_group"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_marginTop="10dp"
-        android:layout_gravity="center"
-        android:background="@drawable/shape_img_card">
-        <ImageView
-            android:id="@+id/img_group"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:scaleType="fitXY"
-            android:padding="1dp"
-            android:src="@mipmap/idcard"/>
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:src="@mipmap/id_reverse"/>
-    </RelativeLayout>
-        <TextView
-            android:id="@+id/tv"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:gravity="center"
-            android:layout_gravity="center_horizontal"
-            android:layout_below="@+id/rl_group"
-            android:background="#666666"
-            android:text="可重新扫描"
-            android:textColor="@color/white"
-            android:padding="2dp"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="手持身份证\n银行卡半身照"
-            android:layout_below="@+id/tv"
-            />
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_margin="10dp"
-        android:background="@color/gray"></View>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:drawableLeft="@drawable/ic_info_outline_red_24dp"
-        android:layout_marginLeft="10dp"
-        android:textColor="@color/colorAccent"
-        android:text="注意"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="请务必拍摄清析，能看清证件号码和证件有效期，在光线充足的条件下拍摄效果更佳。"
-        android:textColor="@color/colorAccent"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"/>
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="bottom">
-        <Button
-            android:id="@+id/btn_commit"
+        android:orientation="vertical">
+        <include
+            layout="@layout/top_title_item"></include>
+        <TextView
+            android:id="@+id/tv_msg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="8dp"
+            android:text="提交安全支付认证，方可使用支付功能"
+            android:textColor="@color/colorAccent"/>
+        <RelativeLayout
+            android:id="@+id/rl_group"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center"
+            android:background="@drawable/shape_img_card">
+            <ImageView
+                android:id="@+id/img_group"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:scaleType="fitXY"
+                android:padding="1dp"
+                android:src="@mipmap/idcard"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@mipmap/id_reverse"/>
+        </RelativeLayout>
+            <TextView
+                android:id="@+id/tv"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:gravity="center"
+                android:layout_gravity="center_horizontal"
+                android:layout_below="@+id/rl_group"
+                android:background="#666666"
+                android:text="可重新扫描"
+                android:textColor="@color/white"
+                android:padding="2dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="手持身份证\n银行卡半身照"
+                android:layout_below="@+id/tv"
+                />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
             android:layout_margin="10dp"
-            android:text="提交审核"
-            android:textColor="@color/white"
-            android:textSize="@dimen/dimen20"
-            android:background="@drawable/shape_corners_blue"/>
-    </RelativeLayout>
-</LinearLayout>
+            android:background="@color/gray"></View>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:drawableLeft="@drawable/ic_info_outline_red_24dp"
+            android:layout_marginLeft="10dp"
+            android:textColor="@color/colorAccent"
+            android:text="注意"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="请务必拍摄清析，能看清证件号码和证件有效期，在光线充足的条件下拍摄效果更佳。"
+            android:textColor="@color/colorAccent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="bottom">
+            <Button
+                android:id="@+id/btn_commit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="提交审核"
+                android:textColor="@color/white"
+                android:textSize="@dimen/dimen20"
+                android:background="@drawable/shape_corners_blue"/>
+        </RelativeLayout>
+    </LinearLayout>
+    <include layout="@layout/load_item"></include>
+</RelativeLayout>

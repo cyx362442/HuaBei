@@ -37,9 +37,14 @@ public class CollectionActivity extends AppCompatActivity {
     }
 
     String str="";
-    @OnClick({R.id.tv_one, R.id.tv_two, R.id.tv_three, R.id.ll_weixin, R.id.tv_four, R.id.tv_five, R.id.tv_six, R.id.img_zhifubao, R.id.tv_seven, R.id.tv_eight, R.id.tv_nine, R.id.tv_zero, R.id.tv_dot, R.id.doubleZero, R.id.ll_yinlian})
+    @OnClick({R.id.img_back,R.id.tv_one, R.id.tv_two, R.id.tv_three, R.id.ll_weixin, R.id.tv_four,
+            R.id.tv_five, R.id.tv_six, R.id.img_zhifubao, R.id.tv_seven, R.id.tv_eight,
+            R.id.tv_nine, R.id.tv_zero, R.id.tv_dot, R.id.doubleZero, R.id.ll_yinlian})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.img_back:
+                finish();
+                break;
             case R.id.tv_one:
                 intputMsg("1");
                 break;

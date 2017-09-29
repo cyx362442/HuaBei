@@ -82,10 +82,6 @@ public class LoginActivity extends AppCompatActivity{
         dialog.show(getSupportFragmentManager(), getString(R.string.noticeDialog));
 
         mShapreUtis = ShapreUtis.getInstance(this);
-        String account = mShapreUtis.getAccount();
-        if(!TextUtils.isEmpty(account)){
-            mEtAccount.setText(account);
-        }
         Http_checkVersion();
 
 //        new Thread(new Runnable() {
@@ -109,6 +105,15 @@ public class LoginActivity extends AppCompatActivity{
 //
 //            }
 //        }).start();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        String account = mShapreUtis.getAccount();
+        if(!TextUtils.isEmpty(account)){
+            mEtAccount.setText(account);
+        }
     }
 
     private void Http_checkVersion() {

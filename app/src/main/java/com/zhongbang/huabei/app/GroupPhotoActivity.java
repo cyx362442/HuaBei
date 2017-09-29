@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
@@ -61,12 +62,14 @@ public class GroupPhotoActivity extends AppCompatActivity {
     public static int TAKE_PHOTO_REQUEST_CODE = 100;
     public static final String strDir = Environment.getExternalStorageDirectory() + "/zhongbang/";
     private String mAudit;
+    private View mViewLoad;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_photo);
         ButterKnife.bind(this);
+        mViewLoad = findViewById(R.id.rl_load);
         mTvTitle.setText("人卡合影");
 
         ShapreUtis shapreUtis = ShapreUtis.getInstance(this);
@@ -83,6 +86,7 @@ public class GroupPhotoActivity extends AppCompatActivity {
     }
 
     private void Http_Group(String name) {
+        mViewLoad.setVisibility(View.VISIBLE);
         HashMap<String, String> map = new HashMap<>();
         map.put("username", mAccount);
         map.put("name", name);
@@ -91,6 +95,7 @@ public class GroupPhotoActivity extends AppCompatActivity {
         DownHTTP.postVolley(urlGroup, map, new VolleyResultListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                mViewLoad.setVisibility(View.GONE);
             }
             @Override
             public void onResponse(String response) {
@@ -99,6 +104,7 @@ public class GroupPhotoActivity extends AppCompatActivity {
                 Glide.with(GroupPhotoActivity.this).
                         load(group.getData().getHandCardImg()).
                         into(mImgGroup);
+                mViewLoad.setVisibility(View.GONE);
             }
         });
     }
@@ -136,7 +142,9 @@ public class GroupPhotoActivity extends AppCompatActivity {
                 if(getString(R.string.audited).equals(mAudit)){
                     finish();
                     EventBus.getDefault().post(new FinishEvent());
+                    return;
                 }
+                mViewLoad.setVisibility(View.VISIBLE);
                 final File file = new File(strDir, "group.jpg");
                 final HashMap<String, String> map = new HashMap<>();
                 map.put("username", mAccount);
@@ -149,11 +157,18 @@ public class GroupPhotoActivity extends AppCompatActivity {
                             String post = UploadUtil.post(urlCommit, map, mapFiles);
                             JSONObject jsonObject = new JSONObject(post);
                             String code = jsonObject.getString("code");
-                            String msg = jsonObject.getString("msg");
-                            ToastUtil.showShort(GroupPhotoActivity.this, msg);
+                            final String msg = jsonObject.getString("msg");
                             if ("1".equals(code)) {
+                                EventBus.getDefault().post(new FinishEvent());
                                 finish();
                             }
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    mViewLoad.setVisibility(View.GONE);
+                                    ToastUtil.showShort(GroupPhotoActivity.this, msg);
+                                }
+                            });
                         } catch (IOException e) {
                             e.printStackTrace();
                         } catch (JSONException e) {

@@ -20,7 +20,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="1dp"
-                        android:src="@mipmap/idcard"/>
+                        android:src="@mipmap/bankcard_front"/>
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -55,7 +55,7 @@
                         android:id="@+id/img_bank_reverse"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@mipmap/idcard"/>
+                        android:src="@mipmap/bankcard_reverse"/>
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

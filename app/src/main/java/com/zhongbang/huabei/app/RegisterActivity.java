@@ -18,6 +18,7 @@ import com.android.volley.VolleyError;
 import com.zhongbang.huabei.R;
 import com.zhongbang.huabei.http.DownHTTP;
 import com.zhongbang.huabei.http.VolleyResultListener;
+import com.zhongbang.huabei.utils.ShapreUtis;
 import com.zhongbang.huabei.utils.ToastUtil;
 import com.zhongbang.huabei.webview.WebActivity;
 
@@ -58,12 +59,15 @@ public class RegisterActivity extends AppCompatActivity implements CompoundButto
     private boolean agreed=false;
     private Intent mIntent;
     private String mWebUrl;
+    private ShapreUtis mShapreUtis;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         ButterKnife.bind(this);
+        mShapreUtis = ShapreUtis.getInstance(this);
+
         mTvTitle.setText("注册");
         mCheckbox.setOnCheckedChangeListener(this);
     }
@@ -124,7 +128,7 @@ public class RegisterActivity extends AppCompatActivity implements CompoundButto
         }
     }
 
-    private void Http_register(String name, String phone2, String code, String password, String introduce) {
+    private void Http_register(String name, final String phone2, String code, String password, String introduce) {
         HashMap<String,String> map=new HashMap<>();
         map.put("name",name);
         map.put("phone",phone2);
@@ -139,8 +143,12 @@ public class RegisterActivity extends AppCompatActivity implements CompoundButto
             public void onResponse(String response) {
                 try {
                     JSONObject jsonObject = new JSONObject(response);
-                    String code1 = jsonObject.getString("code");
+                    String code = jsonObject.getString("code");
                     String msg = jsonObject.getString("msg");
+                    if("1".equals(code)){
+                        mShapreUtis.setAccount(phone2);
+                        finish();
+                    }
                     ToastUtil.showShort(RegisterActivity.this,msg);
                 } catch (JSONException e) {
                     e.printStackTrace();
