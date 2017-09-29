@@ -80,7 +80,7 @@
                 android:layout_height="wrap_content"
                 android:padding="20dp"
                 android:layout_centerVertical="true"
-                android:src="@drawable/ic_visibility_black_24dp"
+                android:src="@drawable/ic_visibility_gray_24dp"
                 android:layout_alignParentRight="true"
                 />
         </RelativeLayout>

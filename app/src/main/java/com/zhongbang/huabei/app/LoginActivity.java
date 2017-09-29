@@ -88,27 +88,27 @@ public class LoginActivity extends AppCompatActivity{
         }
         Http_checkVersion();
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Bitmap bitmap = Glide.with(LoginActivity.this)
-                            .load(urlLogo)
-                            .asBitmap()
-                            .into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
-                            .get();
-                    if (bitmap != null){
-                        // 在这里执行图片保存方法
-                        saveImageToGallery(bitmap);
-                    }
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        }).start();
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                try {
+//                    Bitmap bitmap = Glide.with(LoginActivity.this)
+//                            .load(urlLogo)
+//                            .asBitmap()
+//                            .into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
+//                            .get();
+//                    if (bitmap != null){
+//                        // 在这里执行图片保存方法
+//                        saveImageToGallery(bitmap);
+//                    }
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                } catch (ExecutionException e) {
+//                    e.printStackTrace();
+//                }
+//
+//            }
+//        }).start();
     }
 
     private void Http_checkVersion() {
@@ -180,7 +180,7 @@ public class LoginActivity extends AppCompatActivity{
                     mImgPassword.setImageResource(R.drawable.ic_visibility_blue_24dp);
                 }else{
                     mEtPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
-                    mImgPassword.setImageResource(R.drawable.ic_visibility_black_24dp);
+                    mImgPassword.setImageResource(R.drawable.ic_visibility_gray_24dp);
                 }
                 break;
         }

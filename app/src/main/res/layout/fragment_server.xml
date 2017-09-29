@@ -7,7 +7,7 @@
     <RelativeLayout
         android:id="@+id/relativeLayout_landing"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:background="@color/blue" >
@@ -23,12 +23,11 @@
             android:id="@+id/textView_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
+            android:padding="10dp"
+            android:layout_centerInParent="true"
+            android:textSize="@dimen/dimen20"
             android:text="客服中心"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="#ffffff"
-            android:textStyle="bold" />
+            android:textColor="#ffffff"/>
     </RelativeLayout>
     <android.widget.ScrollView
         android:layout_width="match_parent"
