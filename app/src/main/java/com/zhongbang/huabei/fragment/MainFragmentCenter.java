@@ -11,6 +11,7 @@ import com.zhongbang.huabei.R;
 import com.zhongbang.huabei.app.main_center.MyBillActivity;
 import com.zhongbang.huabei.app.main_center.MyComeinActivity;
 import com.zhongbang.huabei.app.main_center.OfficalActivity;
+import com.zhongbang.huabei.fragment.dialog.ConfirmDialogFragment;
 import com.zhongbang.huabei.utils.ShapreUtis;
 import com.zhongbang.huabei.webview.WebActivity;
 
@@ -26,6 +27,7 @@ public class MainFragmentCenter extends Fragment {
     private Intent mIntent;
     private String mAccount;
     private String mUrl;
+    private String mAudit;
 
     public MainFragmentCenter() {
         // Required empty public constructor
@@ -39,6 +41,7 @@ public class MainFragmentCenter extends Fragment {
         unbinder = ButterKnife.bind(this, inflate);
         ShapreUtis shapreUtis = ShapreUtis.getInstance(getActivity());
         mAccount = shapreUtis.getAccount();
+        mAudit = shapreUtis.getAudit();
         return inflate;
     }
 
@@ -50,6 +53,7 @@ public class MainFragmentCenter extends Fragment {
 
     @OnClick({R.id.ll_center1, R.id.ll_center2, R.id.ll_center3, R.id.ll_center4, R.id.ll_center5, R.id.ll_center6})
     public void onViewClicked(View view) {
+        if (checkAudit()) return;
         switch (view.getId()) {
             case R.id.ll_center1:
                 mIntent = new Intent(getActivity(), MyComeinActivity.class);
@@ -83,5 +87,14 @@ public class MainFragmentCenter extends Fragment {
         mIntent.putExtra("url",url+mAccount);
         mIntent.putExtra(getString(R.string.webtitle),title);
         startActivity(mIntent);
+    }
+
+    private boolean checkAudit() {
+        if(!getString(R.string.audited).equals(mAudit)){
+            ConfirmDialogFragment fragment = ConfirmDialogFragment.newInstance(getString(R.string.dialogMsg));
+            fragment.show(getFragmentManager(),getString(R.string.dialog));
+            return true;
+        }
+        return false;
     }
 }

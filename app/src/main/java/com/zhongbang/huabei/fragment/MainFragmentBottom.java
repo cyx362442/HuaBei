@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.zhongbang.huabei.R;
+import com.zhongbang.huabei.fragment.dialog.ConfirmDialogFragment;
+import com.zhongbang.huabei.utils.ShapreUtis;
 import com.zhongbang.huabei.webview.WebActivity;
 
 import butterknife.ButterKnife;
@@ -21,6 +23,7 @@ import butterknife.Unbinder;
 public class MainFragmentBottom extends Fragment {
     Unbinder unbinder;
     private String mUrl;
+    private String mAudit;
 
     public MainFragmentBottom() {
         // Required empty public constructor
@@ -32,6 +35,8 @@ public class MainFragmentBottom extends Fragment {
         // Inflate the layout for this fragment
         View inflate = inflater.inflate(R.layout.fragment_main_fragment_bottom, container, false);
         unbinder = ButterKnife.bind(this, inflate);
+        ShapreUtis shapreUtis = ShapreUtis.getInstance(getActivity());
+        mAudit = shapreUtis.getAudit();
         return inflate;
     }
 
@@ -43,6 +48,7 @@ public class MainFragmentBottom extends Fragment {
 
     @OnClick({R.id.ll_bottom1, R.id.ll_bottom2, R.id.ll_bottom3, R.id.ll_bottom4, R.id.ll_bottom5, R.id.ll_bottom6})
     public void onViewClicked(View view) {
+        if (checkAudit()) return;
         switch (view.getId()) {
             case R.id.ll_bottom1:
                 mUrl = "https://test.doraemoney.com/wkCube/testPage.html";
@@ -76,5 +82,13 @@ public class MainFragmentBottom extends Fragment {
         intent.putExtra("url",url);
         intent.putExtra(getString(R.string.webtitle),title);
         startActivity(intent);
+    }
+    private boolean checkAudit() {
+        if(!getString(R.string.audited).equals(mAudit)){
+            ConfirmDialogFragment fragment = ConfirmDialogFragment.newInstance(getString(R.string.dialogMsg));
+            fragment.show(getFragmentManager(),getString(R.string.dialog));
+            return true;
+        }
+        return false;
     }
 }

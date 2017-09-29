@@ -24,7 +24,6 @@ import butterknife.Unbinder;
 public class MainFragmentTop extends Fragment {
     Unbinder unbinder;
     private String mAudit;
-    private ConfirmDialogFragment mDialogFragment;
     private Intent mIntent;
 
     public MainFragmentTop() {
@@ -50,11 +49,7 @@ public class MainFragmentTop extends Fragment {
 
     @OnClick({R.id.ll_top1, R.id.ll_top2})
     public void onViewClicked(View view) {
-//        if(!getString(R.string.audited).equals(mAudit)){
-//            mDialogFragment = ConfirmDialogFragment.newInstance(getString(R.string.dialogMsg));
-//            mDialogFragment.show(getFragmentManager(),getString(R.string.dialog));
-//            return;
-//        }
+        if (checkAudit()) return;
         switch (view.getId()) {
             case R.id.ll_top1:
                 mIntent = new Intent(getActivity(), CollectionActivity.class);
@@ -65,5 +60,14 @@ public class MainFragmentTop extends Fragment {
                 startActivity(mIntent);
                 break;
         }
+    }
+
+    private boolean checkAudit() {
+        if(!getString(R.string.audited).equals(mAudit)){
+            ConfirmDialogFragment fragment = ConfirmDialogFragment.newInstance(getString(R.string.dialogMsg));
+            fragment.show(getFragmentManager(),getString(R.string.dialog));
+            return true;
+        }
+        return false;
     }
 }
