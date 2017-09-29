@@ -1,10 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="match_parent"
+                android:orientation="vertical">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:layout_weight="1">
             <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/guide2"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"/>
+    </RelativeLayout>
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="fitXY"
-                android:src="@mipmap/guide2"/>
+                android:layout_height="0dp"
+                android:orientation="vertical"
+                android:layout_weight="1">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:textSize="@dimen/dimen20"
+            android:text="点点手机\n足量分润轻松拿"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:gravity="center"
+            android:layout_weight="1.5">
+            <View
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:layout_margin="10dp"
+                android:background="@drawable/shape_guide_corner2"></View>
+            <View
+                android:layout_width="16dp"
+                android:layout_height="8dp"
+                android:layout_margin="10dp"
+                android:background="@drawable/shape_guide_corner1"></View>
+            <View
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:layout_margin="10dp"
+                android:background="@drawable/shape_guide_corner2"></View>
+        </LinearLayout>
+    </LinearLayout>
 </LinearLayout>

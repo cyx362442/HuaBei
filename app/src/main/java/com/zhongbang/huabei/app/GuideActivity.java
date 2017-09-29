@@ -15,7 +15,7 @@ import com.zhongbang.huabei.utils.ShapreUtis;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GuideActivity extends AppCompatActivity {
+public class GuideActivity extends AppCompatActivity implements View.OnClickListener {
     private List<View> listView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,9 +42,17 @@ public class GuideActivity extends AppCompatActivity {
         ViewPager vp = (ViewPager) findViewById(R.id.viewPager);
         MyPagerAdapter adapter = new MyPagerAdapter();
         vp.setAdapter(adapter);
+
+        inflate3.findViewById(R.id.tv_start).setOnClickListener(this);
     }
 
-    class MyPagerAdapter extends PagerAdapter implements View.OnClickListener {
+    @Override
+    public void onClick(View view) {
+        ShapreUtis.getInstance(GuideActivity.this).isLand(true);
+        toLand();
+    }
+
+    class MyPagerAdapter extends PagerAdapter{
         @Override
         public int getCount() {
             return listView.size();
@@ -62,16 +70,7 @@ public class GuideActivity extends AppCompatActivity {
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
             container.addView(listView.get(position));
-            if(position==listView.size()-1){
-                listView.get(position).setOnClickListener(this);
-            }
             return listView.get(position);
-        }
-
-        @Override
-        public void onClick(View v) {
-            ShapreUtis.getInstance(GuideActivity.this).isLand(true);
-            toLand();
         }
     }
 
