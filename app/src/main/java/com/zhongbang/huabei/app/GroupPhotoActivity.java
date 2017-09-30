@@ -67,6 +67,7 @@ public class GroupPhotoActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         setContentView(R.layout.activity_group_photo);
         ButterKnife.bind(this);
         mViewLoad = findViewById(R.id.rl_load);

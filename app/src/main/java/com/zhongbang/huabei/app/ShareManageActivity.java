@@ -6,6 +6,7 @@ import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.zhongbang.huabei.R;
@@ -21,6 +22,7 @@ public class ShareManageActivity extends AppCompatActivity implements View.OnCli
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_share_manage);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         ShapreUtis shapreUtis = ShapreUtis.getInstance(this);
         String account = shapreUtis.getAccount();
         mUrlShare = "http://chinaqmf.cn:8088/IHBZC/zhuce/registered.html?id="+account;

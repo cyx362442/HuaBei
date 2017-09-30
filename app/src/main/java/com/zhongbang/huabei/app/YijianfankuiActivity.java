@@ -3,6 +3,7 @@ package com.zhongbang.huabei.app;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 
 import com.android.volley.VolleyError;
@@ -25,6 +26,7 @@ public class YijianfankuiActivity extends AppCompatActivity implements View.OnCl
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_yijianfankui);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         ShapreUtis shapreUtis = ShapreUtis.getInstance(this);
         mAccount = shapreUtis.getAccount();
         edittext = (EditText) findViewById(R.id.editText1);
