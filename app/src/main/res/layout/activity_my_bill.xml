@@ -9,7 +9,7 @@
     <RelativeLayout
 android:id="@+id/relativeLayout1"
 android:layout_width="match_parent"
-android:layout_height="50dp"
+android:layout_height="wrap_content"
 android:layout_alignParentLeft="true"
 android:layout_alignParentTop="true"
 android:background="#ffffff">
@@ -19,7 +19,8 @@ android:id="@+id/textView1"
 android:layout_width="wrap_content"
 android:layout_height="wrap_content"
 android:layout_centerHorizontal="true"
-android:layout_centerVertical="true"
+android:layout_marginTop="25dp"
+android:layout_marginBottom="10dp"
 android:text="我的账单"
 android:textAppearance="?android:attr/textAppearanceLarge"
 android:textSize="20sp"/>
@@ -28,7 +29,8 @@ android:textSize="20sp"/>
 android:id="@+id/iv_back"
 android:layout_width="wrap_content"
 android:layout_height="wrap_content"
-android:layout_centerVertical="true"
+android:layout_marginTop="25dp"
+android:layout_marginBottom="10dp"
 android:src="@mipmap/back_black_normal"/>
 </RelativeLayout>
 

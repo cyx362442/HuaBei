@@ -8,7 +8,7 @@
     <RelativeLayout
         android:id="@+id/rel_1"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:background="#fb6801" >
@@ -17,9 +17,9 @@
             android:id="@+id/image_return"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
+            android:padding="10dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="10dp"
             android:src="@drawable/ic_chevron_left_black_48dp" />
 
         <TextView
@@ -27,7 +27,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
+            android:padding="10dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="10dp"
             android:text="我的收入"
             android:textColor="#ffffff"
             android:textSize="20dp" />
@@ -37,9 +39,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_alignTop="@+id/textView1"
             android:padding="5dp"
             android:text="账单明细"
+            android:layout_marginTop="35dp"
+            android:layout_marginBottom="10dp"
             android:textColor="#ffffff"/>
     </RelativeLayout>
 

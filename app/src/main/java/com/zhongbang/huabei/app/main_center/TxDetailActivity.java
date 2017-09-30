@@ -3,6 +3,7 @@ package com.zhongbang.huabei.app.main_center;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
@@ -35,6 +36,7 @@ public class TxDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tx_detail);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         zhangdanhao = getIntent().getStringExtra("dingdanhao");
         initUI();
     }

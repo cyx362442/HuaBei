@@ -14,15 +14,14 @@
             android:id="@+id/img_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
-            android:layout_marginBottom="10dp"
-            android:padding="15dp"
+            android:layout_marginTop="15dp"
+            android:padding="10dp"
             android:src="@drawable/ic_chevron_left_black_48dp"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="35dp"
+            android:layout_marginTop="20dp"
             android:textColor="@color/white"
             android:textSize="@dimen/dimen20"
             android:text="H5分享营销"/>
