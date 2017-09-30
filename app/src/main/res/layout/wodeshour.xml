@@ -197,7 +197,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
                 android:layout_marginLeft="14dp"
-                android:text="O2O中国银联T+1总额"
+                android:text="O2O中国银联T+0总额"
                 android:textColor="#fb6801"
                 android:textSize="16dp" />
 
