@@ -1,5 +1,6 @@
 package com.zhongbang.huabei.app.main_center;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.CheckedTextView;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
@@ -16,6 +18,7 @@ import com.google.gson.reflect.TypeToken;
 import com.zhongbang.huabei.R;
 import com.zhongbang.huabei.adapter.DocumentAdapter;
 import com.zhongbang.huabei.bean.Document;
+import com.zhongbang.huabei.fragment.ImageShowActivity;
 import com.zhongbang.huabei.http.DownHTTP;
 import com.zhongbang.huabei.http.VolleyResultListener;
 
@@ -57,7 +60,7 @@ public class OfficalActivity extends AppCompatActivity {
         mTvTitle.setText("中央方案");
         mRecycleView.setLayoutManager(new LinearLayoutManager(this));
         mRecycleView.addItemDecoration(new DividerItemDecoration(this,1));
-        mAdapter = new DocumentAdapter(mDocumentList);
+        mAdapter = new DocumentAdapter(mDocumentList,this);
         mRecycleView.setAdapter(mAdapter);
 
         Http_Data(marketingUrl);

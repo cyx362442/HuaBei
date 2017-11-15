@@ -1,5 +1,6 @@
 package com.zhongbang.huabei.adapter;
 
+import android.content.Context;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,8 +20,10 @@ import java.util.List;
  */
 
 public class DocumentAdapter extends BaseQuickAdapter<Document> {
-    public DocumentAdapter(List<Document> data) {
+    private Context mContext;
+    public DocumentAdapter(List<Document> data,Context context) {
         super(R.layout.recy_document_item,data);
+        mContext=context;
     }
 
     @Override
@@ -35,7 +38,7 @@ public class DocumentAdapter extends BaseQuickAdapter<Document> {
             rvItem.addItemDecoration(new SpaceItemDecoration(3));
             rvItem.setItemAnimator(new DefaultItemAnimator());
             String[] imgUrl = document.getImages().split(",");
-            ImageAdapter adapter = new ImageAdapter(imgUrl);
+            ImageAdapter adapter = new ImageAdapter(mContext,imgUrl);
             rvItem.setAdapter(adapter);
         }
     }

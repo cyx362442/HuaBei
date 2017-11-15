@@ -144,6 +144,8 @@
         </activity>
         <activity android:name=".app.YijianfankuiActivity">
         </activity>
+        <activity android:name=".fragment.ImageShowActivity">
+        </activity>
     </application>
 
 </manifest>

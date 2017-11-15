@@ -51,20 +51,20 @@ public class MainFragmentBottom extends Fragment {
         if (checkAudit()) return;
         switch (view.getId()) {
             case R.id.ll_bottom1:
-                mUrl = "https://test.doraemoney.com/wkCube/testPage.html";
+                mUrl = "http://chinaqmf.cn:8088/ihuabei/attached/applyCard";
                 toWebView(mUrl,"信用卡办理");
                 break;
             case R.id.ll_bottom2:
-                mUrl="https://test.doraemoney.com/wkCube/testPage.html";
-                toWebView(mUrl,"无抵押贷款");
-                break;
-            case R.id.ll_bottom3:
                 mUrl="http://chinaqmf.cn:8088/ihuabei/attached/credit-card.html";
                 toWebView(mUrl,"信用卡提额");
                 break;
-            case R.id.ll_bottom4:
+            case R.id.ll_bottom3:
                 mUrl="http://chinaqmf.cn:8088/ihuabei/attached/huabei.html";
                 toWebView(mUrl,"花呗、借呗提额");
+                break;
+            case R.id.ll_bottom4:
+                mUrl="http://chinaqmf.cn:8088/ihuabei/attached/applyCard";
+                toWebView(mUrl,"无抵押贷款");
                 break;
             case R.id.ll_bottom5:
                 mUrl="http://chinaqmf.cn:8088/ihuabei/attached/branch.html";

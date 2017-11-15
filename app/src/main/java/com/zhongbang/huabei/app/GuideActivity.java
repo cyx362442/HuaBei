@@ -23,11 +23,11 @@ public class GuideActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guide);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        boolean land = ShapreUtis.getInstance(this).getLand();
-        if(land){
-            toLand();
-            return;
-        }
+//        boolean land = ShapreUtis.getInstance(this).getLand();
+//        if(land){
+//            toLand();
+//            return;
+//        }
     }
 
     @Override
@@ -45,7 +45,7 @@ public class GuideActivity extends AppCompatActivity implements View.OnClickList
         MyPagerAdapter adapter = new MyPagerAdapter();
         vp.setAdapter(adapter);
 
-        inflate3.findViewById(R.id.tv_start).setOnClickListener(this);
+        inflate3.findViewById(R.id.image).setOnClickListener(this);
     }
 
     @Override
