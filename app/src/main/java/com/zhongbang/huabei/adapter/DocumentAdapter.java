@@ -5,7 +5,9 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.PopupWindow;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -41,5 +43,13 @@ public class DocumentAdapter extends BaseQuickAdapter<Document> {
             ImageAdapter adapter = new ImageAdapter(mContext,imgUrl);
             rvItem.setAdapter(adapter);
         }
+        baseViewHolder.setOnClickListener(R.id.image, new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                View inflate = LayoutInflater.from(mContext).inflate(R.layout.popu_item, null, false);
+                PopupWindow popupWindow = new PopupWindow(inflate,400,80,true);
+                popupWindow.showAsDropDown(view);
+            }
+        });
     }
 }
