@@ -8,6 +8,7 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.zhongbang.huabei.R;
+import com.zhongbang.huabei.app.main_center.OfficalActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -47,6 +48,8 @@ public class ShareGoodsActivity extends AppCompatActivity {
                 startActivity(mIntent);
                 break;
             case R.id.rl4:
+                mIntent=new Intent(this, OfficalActivity.class);
+                startActivity(mIntent);
                 break;
             case R.id.rl5:
                 mIntent=new Intent(this,H5ShareActivity.class);

@@ -84,7 +84,7 @@ public class LocalOpenActivity extends AppCompatActivity {
                     HashMap<String, String> map = new HashMap<>();
                     map.put("phone",account);
                     map.put("password",password1);
-                    map.put("verifyCode ",code);
+                    map.put("verifyCode",code);
                     map.put("referrer",mAccount);
                     DownHTTP.postVolley(urlRegister, map, new VolleyResultListener() {
                         @Override
