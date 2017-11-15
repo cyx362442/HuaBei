@@ -1,5 +1,7 @@
 package com.zhongbang.huabei.adapter;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -26,18 +28,19 @@ import java.util.List;
 public class DocumentAdapter extends BaseQuickAdapter<Document> implements View.OnClickListener {
     private Context mContext;
     private final PopupWindow mPopupWindow;
+    private Document mDocument;
 
     public DocumentAdapter(List<Document> data,Context context) {
         super(R.layout.recy_document_item,data);
         mContext=context;
-        View inflate = LayoutInflater.from(mContext).inflate(R.layout.popu_item, null, false);
-        mPopupWindow = new PopupWindow(inflate,400,80,true);
+        View inflate = LayoutInflater.from(mContext).inflate(R.layout.popu_item, null, true);
+        mPopupWindow = new PopupWindow(inflate,500,80,true);
         inflate.findViewById(R.id.tv_saveImg).setOnClickListener(this);
         inflate.findViewById(R.id.tv_copyText).setOnClickListener(this);
     }
 
     @Override
-    protected void convert(BaseViewHolder baseViewHolder, Document document) {
+    protected void convert(BaseViewHolder baseViewHolder, final Document document) {
         baseViewHolder.setText(R.id.tv_document,document.getContent());
         baseViewHolder.setText(R.id.tv_time,document.getCreateTime());
         RecyclerView rvItem = baseViewHolder.getView(R.id.recy_item);
@@ -55,6 +58,7 @@ public class DocumentAdapter extends BaseQuickAdapter<Document> implements View.
             @Override
             public void onClick(View view) {
                 mPopupWindow.showAsDropDown(view);
+                mDocument=document;
             }
         });
     }
@@ -65,6 +69,13 @@ public class DocumentAdapter extends BaseQuickAdapter<Document> implements View.
             ToastUtil.showShort(mContext,"保存图片");
         }else if(view.getId()==R.id.tv_copyText){
             ToastUtil.showShort(mContext,"复制文案");
+            String content = mDocument.getContent();
+            //获取剪贴板管理器：
+            ClipboardManager cm = (ClipboardManager) mContext.getSystemService(Context.CLIPBOARD_SERVICE);
+            // 创建普通字符型ClipData
+            ClipData mClipData = ClipData.newPlainText("Label", content);
+            // 将ClipData内容放到系统剪贴板里。
+            cm.setPrimaryClip(mClipData);
         }
     }
 }
