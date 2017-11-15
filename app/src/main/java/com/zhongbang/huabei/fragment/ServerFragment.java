@@ -3,6 +3,7 @@ package com.zhongbang.huabei.fragment;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -15,6 +16,7 @@ import com.android.volley.VolleyError;
 import com.zhongbang.huabei.R;
 import com.zhongbang.huabei.app.ForgetActivity;
 import com.zhongbang.huabei.app.YijianfankuiActivity;
+import com.zhongbang.huabei.fragment.dialog.ConfirmDialogFragment;
 import com.zhongbang.huabei.http.DownHTTP;
 import com.zhongbang.huabei.http.VolleyResultListener;
 import com.zhongbang.huabei.utils.ShapreUtis;
@@ -35,7 +37,7 @@ import butterknife.Unbinder;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ServerFragment extends Fragment {
+public class ServerFragment extends Fragment implements ConfirmDialogFragment.OnConfirmClickListener {
     @BindView(R.id.tv_phone)
     TextView mTvPhone;
     @BindView(R.id.tv_grade)
@@ -49,6 +51,7 @@ public class ServerFragment extends Fragment {
     private View mViewLoad;
     private String mWebUrl;
     private Intent mIntent;
+    private String mMobile;
 
     public ServerFragment() {
         // Required empty public constructor
@@ -112,6 +115,7 @@ public class ServerFragment extends Fragment {
                 toWebView(mWebUrl,"企业介绍");
                 break;
             case R.id.rl3:
+                Http_Call();
                 break;
             case R.id.rl4:
                 mWebUrl="http://chinaqmf.cn:8088/ihuabei/attached/right.html";
@@ -130,33 +134,7 @@ public class ServerFragment extends Fragment {
                 startActivity(mIntent);
                 break;
             case R.id.rl8:
-                mViewLoad.setVisibility(View.VISIBLE);
-                HashMap<String, String> map = new HashMap<>();
-                DownHTTP.postVolley(updateUrl, map, new VolleyResultListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        mViewLoad.setVisibility(View.GONE);
-                        ToastUtil.showShort(getActivity(),"网络异常");
-                    }
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            JSONArray jsonArray = new JSONArray(response);
-                            JSONObject jsonObject = jsonArray.getJSONObject(0);
-                            String systemVersion = jsonObject.getString("system_version");
-                            String authorContact = jsonObject.getString("author_contact");
-                            if(Float.parseFloat(systemVersion)>getAppVersionName()){
-                                UpdateFragment fragment = UpdateFragment.newInstance(authorContact);
-                                fragment.show(getActivity().getSupportFragmentManager(), getString(R.string.update));
-                            }else{
-                                ToastUtil.showShort(getActivity(),"当前己是最新版");
-                            }
-                            mViewLoad.setVisibility(View.GONE);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
+                Http_checkVersion();
                 break;
             case R.id.rl9:
                 mIntent=new Intent(getActivity(), ForgetActivity.class);
@@ -166,6 +144,60 @@ public class ServerFragment extends Fragment {
                 getActivity().finish();
                 break;
         }
+    }
+
+    private void Http_Call() {
+        String url="http://chinaqmf.cn/app/main_set.aspx";
+        DownHTTP.getVolley(url, new VolleyResultListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                ToastUtil.showShort(getActivity(),"网络异常");
+            }
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONArray jsonArray = new JSONArray(response);
+                    JSONObject jsonObject = jsonArray.getJSONObject(0);
+                    mMobile = jsonObject.getString("Mobile");
+                    ConfirmDialogFragment fragment = ConfirmDialogFragment.
+                            newInstance("点击【确定】将联系客服\n电话：" + mMobile, true);
+                    fragment.show(getFragmentManager(),getString(R.string.dialog));
+                    fragment.setOnConfirmClickListener(ServerFragment.this);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void Http_checkVersion() {
+        mViewLoad.setVisibility(View.VISIBLE);
+        HashMap<String, String> map = new HashMap<>();
+        DownHTTP.postVolley(updateUrl, map, new VolleyResultListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                mViewLoad.setVisibility(View.GONE);
+                ToastUtil.showShort(getActivity(),"网络异常");
+            }
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONArray jsonArray = new JSONArray(response);
+                    JSONObject jsonObject = jsonArray.getJSONObject(0);
+                    String systemVersion = jsonObject.getString("system_version");
+                    String authorContact = jsonObject.getString("author_contact");
+                    if(Float.parseFloat(systemVersion)>getAppVersionName()){
+                        UpdateFragment fragment = UpdateFragment.newInstance(authorContact);
+                        fragment.show(getActivity().getSupportFragmentManager(), getString(R.string.update));
+                    }else{
+                        ToastUtil.showShort(getActivity(),"当前己是最新版");
+                    }
+                    mViewLoad.setVisibility(View.GONE);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     private void toWebView(String webUrl,String title) {
@@ -185,5 +217,11 @@ public class ServerFragment extends Fragment {
         } catch (Exception e) {
         }
         return versioncode;
+    }
+
+    @Override
+    public void confirmClick() {
+        Intent dialIntent =  new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + mMobile.trim()));//直接拨打电话
+        startActivity(dialIntent);
     }
 }

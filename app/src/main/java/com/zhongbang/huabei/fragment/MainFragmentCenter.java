@@ -91,7 +91,7 @@ public class MainFragmentCenter extends Fragment {
 
     private boolean checkAudit() {
         if(!getString(R.string.audited).equals(mAudit)){
-            ConfirmDialogFragment fragment = ConfirmDialogFragment.newInstance(getString(R.string.dialogMsg));
+            ConfirmDialogFragment fragment = ConfirmDialogFragment.newInstance(getString(R.string.dialogMsg),false);
             fragment.show(getFragmentManager(),getString(R.string.dialog));
             return true;
         }

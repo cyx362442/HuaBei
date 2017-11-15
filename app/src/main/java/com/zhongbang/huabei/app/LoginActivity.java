@@ -16,6 +16,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
@@ -71,6 +72,7 @@ public class LoginActivity extends AppCompatActivity{
     private Intent mIntent;
     private ShapreUtis mShapreUtis;
     private File currentFile;
+    private RelativeLayout mRlLoad;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +81,8 @@ public class LoginActivity extends AppCompatActivity{
         setContentView(R.layout.activity_login);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         ButterKnife.bind(this);
+        mRlLoad = (RelativeLayout) findViewById(R.id.rl_load);
+
         map = new HashMap<>();
         NoticeDialog dialog = new NoticeDialog();
         dialog.show(getSupportFragmentManager(), getString(R.string.noticeDialog));
@@ -122,6 +126,7 @@ public class LoginActivity extends AppCompatActivity{
         DownHTTP.postVolley(updateUrl, map, new VolleyResultListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+
             }
 
             @Override
@@ -194,6 +199,7 @@ public class LoginActivity extends AppCompatActivity{
     }
 
     private void Http_land() {
+        mRlLoad.setVisibility(View.VISIBLE);
         final String account = mEtAccount.getText().toString().trim();
         String password = mEtPassword.getText().toString().trim();
         HashMap<String, String> map = new HashMap<>();
@@ -202,6 +208,8 @@ public class LoginActivity extends AppCompatActivity{
         DownHTTP.postVolley(urlLand, map, new VolleyResultListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                mRlLoad.setVisibility(View.GONE);
+                ToastUtil.showShort(LoginActivity.this,"网络异常");
             }
             @Override
             public void onResponse(String response) {
@@ -210,6 +218,7 @@ public class LoginActivity extends AppCompatActivity{
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(intent);
                 }
+                mRlLoad.setVisibility(View.GONE);
                 ToastUtil.showShort(LoginActivity.this,response);
             }
         });

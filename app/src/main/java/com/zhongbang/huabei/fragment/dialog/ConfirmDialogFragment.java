@@ -14,21 +14,32 @@ import com.zhongbang.huabei.R;
 import com.zhongbang.huabei.app.RenZhengActivity;
 
 /**
- * A simple {@link Fragment} subclass.
+ * A simple {@link} subclass.
  */
 public class ConfirmDialogFragment extends DialogFragment implements View.OnClickListener {
-    public static ConfirmDialogFragment newInstance(String message) {
+
+    private boolean mPhone;
+
+    public static ConfirmDialogFragment newInstance(String message, boolean phone) {
         Bundle args = new Bundle();
         args.putString("message",message);
+        args.putBoolean("phone",phone);
         ConfirmDialogFragment fragment = new ConfirmDialogFragment();
         fragment.setArguments(args);
         return fragment;
     }
-
+    private OnConfirmClickListener mOnConfirmClickListener;
+    public interface OnConfirmClickListener{
+        void confirmClick();
+    }
+    public void setOnConfirmClickListener(OnConfirmClickListener mOnConfirmClickListener){
+        this.mOnConfirmClickListener=mOnConfirmClickListener;
+    }
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         String message = getArguments().getString("message");
+        mPhone = getArguments().getBoolean("phone");
         LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
         View inflate = layoutInflater.inflate(R.layout.fragment_confirm_dialog, null);
         TextView tvMsg = (TextView) inflate.findViewById(R.id.tv_msg);
@@ -45,8 +56,12 @@ public class ConfirmDialogFragment extends DialogFragment implements View.OnClic
         if(v.getId()==R.id.btn_cancel){
             dismiss();
         }else{
-            Intent intent = new Intent(getActivity(), RenZhengActivity.class);
-            startActivity(intent);
+            if(mPhone){
+                mOnConfirmClickListener.confirmClick();
+            }else{
+                Intent intent = new Intent(getActivity(), RenZhengActivity.class);
+                startActivity(intent);
+            }
             dismiss();
         }
     }
