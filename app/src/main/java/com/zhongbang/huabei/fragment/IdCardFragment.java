@@ -107,7 +107,7 @@ public class IdCardFragment extends Fragment implements View.OnClickListener, Po
                     }
                     break;
                 case REQUEST_CODE_CAMERA:
-                    setIDFront(result);
+//                    setIDFront(result);
                     break;
                 case IDRESVERSE_CODE:
                     setIDReverse(result);
@@ -124,11 +124,10 @@ public class IdCardFragment extends Fragment implements View.OnClickListener, Po
     }
     //设置身份证正面
     private void setIDFront(String reslut) {
-//        Gson gson = new Gson();
-//        IDCard idCard = gson.fromJson(reslut, IDCard.class);
-//        IDCard.DataBean.ItemBean itemBean = idCard.getData().getItem();
-//        setIdData(mImgIDFront,itemBean.getName(),itemBean.getCardno(),getString(R.string.idfront));
-        Log.e("resutlt=====",reslut);
+        Gson gson = new Gson();
+        IDCard idCard = gson.fromJson(reslut, IDCard.class);
+        IDCard.DataBean.ItemBean itemBean = idCard.getData().getItem();
+        setIdData(mImgIDFront,itemBean.getName(),itemBean.getCardno(),getString(R.string.idfront));
     }
     //设置图片
     private void setIdData(ImageView image,String str1,String str2,String imgName) {
@@ -201,9 +200,8 @@ public class IdCardFragment extends Fragment implements View.OnClickListener, Po
 //                startActivityForResult(mIntent, TAKEPHOTO_CODE);
                 if(checkTokenStatus()){
                     Intent intent = new Intent(getActivity(), CameraActivity.class);
-                    intent.putExtra(CameraActivity.KEY_OUTPUT_FILE_PATH,
-                            FileUtil.getSaveFile(getString(R.string.idfront)));
-                    intent.putExtra(CameraActivity.KEY_CONTENT_TYPE, CameraActivity.CONTENT_TYPE_ID_CARD_FRONT);
+                    intent.putExtra(CameraActivity.KEY_OUTPUT_FILE_PATH, FileUtil.getSaveFile(getString(R.string.idfront)).getAbsolutePath());
+                    intent.putExtra(CameraActivity.KEY_NATIVE_TOKEN, CameraActivity.CONTENT_TYPE_ID_CARD_FRONT);
                     startActivityForResult(intent, REQUEST_CODE_CAMERA);
                 }
             }
