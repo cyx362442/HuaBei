@@ -8,6 +8,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -17,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
+import com.baidu.ocr.sdk.model.IDCardParams;
 import com.baidu.ocr.ui.camera.CameraActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -108,6 +110,16 @@ public class IdCardFragment extends Fragment implements View.OnClickListener, Po
                     break;
                 case REQUEST_CODE_CAMERA:
 //                    setIDFront(result);
+                        String contentType = data.getStringExtra(CameraActivity.KEY_CONTENT_TYPE);
+                        String filePath = FileUtil.getSaveFile(getString(R.string.idfront)).getAbsolutePath();
+                        Log.e("filePath=====",filePath);
+                        if (!TextUtils.isEmpty(contentType)) {
+                            if (CameraActivity.CONTENT_TYPE_ID_CARD_FRONT.equals(contentType)) {
+//                                recIDCard(IDCardParams.ID_CARD_SIDE_FRONT, filePath);
+                            } else if (CameraActivity.CONTENT_TYPE_ID_CARD_BACK.equals(contentType)) {
+//                                recIDCard(IDCardParams.ID_CARD_SIDE_BACK, filePath);
+                            }
+                        }
                     break;
                 case IDRESVERSE_CODE:
                     setIDReverse(result);
@@ -124,10 +136,11 @@ public class IdCardFragment extends Fragment implements View.OnClickListener, Po
     }
     //设置身份证正面
     private void setIDFront(String reslut) {
-        Gson gson = new Gson();
-        IDCard idCard = gson.fromJson(reslut, IDCard.class);
-        IDCard.DataBean.ItemBean itemBean = idCard.getData().getItem();
-        setIdData(mImgIDFront,itemBean.getName(),itemBean.getCardno(),getString(R.string.idfront));
+//        Gson gson = new Gson();
+//        IDCard idCard = gson.fromJson(reslut, IDCard.class);
+//        IDCard.DataBean.ItemBean itemBean = idCard.getData().getItem();
+//        setIdData(mImgIDFront,itemBean.getName(),itemBean.getCardno(),getString(R.string.idfront));
+        Log.e("resutlt=====",reslut+"a");
     }
     //设置图片
     private void setIdData(ImageView image,String str1,String str2,String imgName) {
@@ -200,8 +213,9 @@ public class IdCardFragment extends Fragment implements View.OnClickListener, Po
 //                startActivityForResult(mIntent, TAKEPHOTO_CODE);
                 if(checkTokenStatus()){
                     Intent intent = new Intent(getActivity(), CameraActivity.class);
-                    intent.putExtra(CameraActivity.KEY_OUTPUT_FILE_PATH, FileUtil.getSaveFile(getString(R.string.idfront)).getAbsolutePath());
-                    intent.putExtra(CameraActivity.KEY_NATIVE_TOKEN, CameraActivity.CONTENT_TYPE_ID_CARD_FRONT);
+                    intent.putExtra(CameraActivity.KEY_OUTPUT_FILE_PATH,
+                            FileUtil.getSaveFile(getString(R.string.idfront)).getAbsolutePath());
+                    intent.putExtra(CameraActivity.KEY_CONTENT_TYPE, CameraActivity.CONTENT_TYPE_ID_CARD_FRONT);
                     startActivityForResult(intent, REQUEST_CODE_CAMERA);
                 }
             }
