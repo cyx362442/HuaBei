@@ -2,18 +2,25 @@ package com.zhongbang.huabei.app;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.VolleyError;
+import com.baidu.ocr.sdk.OCR;
+import com.baidu.ocr.sdk.OnResultListener;
+import com.baidu.ocr.sdk.exception.OCRError;
+import com.baidu.ocr.sdk.model.AccessToken;
 import com.google.gson.Gson;
 import com.zhongbang.huabei.R;
 import com.zhongbang.huabei.bean.CommitUser;
@@ -79,7 +86,8 @@ public class RenZhengActivity extends AppCompatActivity {
     private HashMap<String, String> mMap;
     private IdCardFragment mIdCardFragment;
     private String mAudit;
-
+    public static boolean hasGotToken = false;
+    private Handler mHandler=new Handler();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,6 +109,30 @@ public class RenZhengActivity extends AppCompatActivity {
             mMsg.setText(getString(R.string.auditMsg));
             mBtnNext.setText("继续查看");
         }
+
+        initAccessTokenWithAkSk();
+    }
+
+    private void initAccessTokenWithAkSk() {
+        OCR.getInstance().initAccessTokenWithAkSk(new OnResultListener<AccessToken>() {
+            @Override
+            public void onResult(AccessToken result) {
+                String token = result.getAccessToken();
+                hasGotToken = true;
+            }
+
+            @Override
+            public void onError(final OCRError error) {
+                error.printStackTrace();
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(RenZhengActivity.this,
+                                "AK，SK方式获取token失败"+error.getMessage(),Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        }, getApplicationContext(), "2rNcuv5oBZB0SW4yXvOBguZq", "MYgWkzgw4V4HgndmfGpR7oQMebdT6oar");
     }
 
     private void Http_User(String name) {
@@ -269,5 +301,7 @@ public class RenZhengActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+        // 释放内存资源
+        OCR.getInstance().release();
     }
 }

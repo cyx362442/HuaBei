@@ -17,14 +17,17 @@ import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
+import com.baidu.ocr.ui.camera.CameraActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.gson.Gson;
 import com.zhongbang.huabei.R;
+import com.zhongbang.huabei.app.RenZhengActivity;
 import com.zhongbang.huabei.bean.IDCard;
 import com.zhongbang.huabei.bean.IDCard_Reverse;
 import com.zhongbang.huabei.event.ID_Front;
 import com.zhongbang.huabei.event.StartAnim;
+import com.zhongbang.huabei.utils.FileUtil;
 import com.zhongbang.huabei.yunmai.ACameraActivity;
 import com.zhongbang.huabei.yunmai.CameraManager;
 import com.zhongbang.huabei.yunmai.HttpUtil;
@@ -43,7 +46,7 @@ public class IdCardFragment extends Fragment implements View.OnClickListener, Po
     private static byte[] bytes;
     private static String extension;
     private final int IMPORT_CODE=1;
-    private final int TAKEPHOTO_CODE=2;
+    private final int REQUEST_CODE_CAMERA=2;
     private final int IDRESVERSE_CODE=3;
     public static final String action="idcard.scan";
     private ImageView mImgIDFront;
@@ -103,7 +106,7 @@ public class IdCardFragment extends Fragment implements View.OnClickListener, Po
                         e.printStackTrace();
                     }
                     break;
-                case TAKEPHOTO_CODE:
+                case REQUEST_CODE_CAMERA:
                     setIDFront(result);
                     break;
                 case IDRESVERSE_CODE:
@@ -121,10 +124,11 @@ public class IdCardFragment extends Fragment implements View.OnClickListener, Po
     }
     //设置身份证正面
     private void setIDFront(String reslut) {
-        Gson gson = new Gson();
-        IDCard idCard = gson.fromJson(reslut, IDCard.class);
-        IDCard.DataBean.ItemBean itemBean = idCard.getData().getItem();
-        setIdData(mImgIDFront,itemBean.getName(),itemBean.getCardno(),getString(R.string.idfront));
+//        Gson gson = new Gson();
+//        IDCard idCard = gson.fromJson(reslut, IDCard.class);
+//        IDCard.DataBean.ItemBean itemBean = idCard.getData().getItem();
+//        setIdData(mImgIDFront,itemBean.getName(),itemBean.getCardno(),getString(R.string.idfront));
+        Log.e("resutlt=====",reslut);
     }
     //设置图片
     private void setIdData(ImageView image,String str1,String str2,String imgName) {
@@ -192,9 +196,16 @@ public class IdCardFragment extends Fragment implements View.OnClickListener, Po
             if (item.getItemId() == R.id.photo) {//从相册获取
                 choiseImage();
             } else {//拍照获取
-                mIntent = new Intent(getActivity(), ACameraActivity.class);
-                mIntent.putExtra(getString(R.string.imageName), getString(R.string.idfront));
-                startActivityForResult(mIntent, TAKEPHOTO_CODE);
+//                mIntent = new Intent(getActivity(), ACameraActivity.class);
+//                mIntent.putExtra(getString(R.string.imageName), getString(R.string.idfront));
+//                startActivityForResult(mIntent, TAKEPHOTO_CODE);
+                if(checkTokenStatus()){
+                    Intent intent = new Intent(getActivity(), CameraActivity.class);
+                    intent.putExtra(CameraActivity.KEY_OUTPUT_FILE_PATH,
+                            FileUtil.getSaveFile(getString(R.string.idfront)));
+                    intent.putExtra(CameraActivity.KEY_CONTENT_TYPE, CameraActivity.CONTENT_TYPE_ID_CARD_FRONT);
+                    startActivityForResult(intent, REQUEST_CODE_CAMERA);
+                }
             }
         } else if (mImageId == R.id.img_id_reverse) {//身份证反面
             if (item.getItemId() == R.id.photo) {//从相册获取
@@ -238,5 +249,12 @@ public class IdCardFragment extends Fragment implements View.OnClickListener, Po
     public static String startScan(){
         String xml = HttpUtil.getSendXML(action,extension);
         return HttpUtil.send(xml,bytes);
+    }
+
+    private boolean checkTokenStatus() {
+        if (!RenZhengActivity.hasGotToken) {
+            Toast.makeText(getActivity(), "token还未成功获取", Toast.LENGTH_LONG).show();
+        }
+        return RenZhengActivity.hasGotToken;
     }
 }
