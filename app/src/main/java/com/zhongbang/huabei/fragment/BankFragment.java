@@ -140,13 +140,17 @@ public class BankFragment extends Fragment implements View.OnClickListener
     }
 
     //设置图片
-    private void setBankData(ImageView image,String str1,String str2,String imgName) {
+    private void setBankData(final ImageView image, String str1, String str2, String imgName) {
         EventBus.getDefault().post(new Bank(str1,str2));
-        File file=FileUtil.getSaveFile(imgName);
-
-        Glide.with(this).load(file).skipMemoryCache(true).
-                diskCacheStrategy(DiskCacheStrategy.NONE).
-                error(R.mipmap.id_reverse).centerCrop().into(image);
+        final File file=FileUtil.getSaveFile(imgName);
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                Glide.with(getActivity()).load(file).skipMemoryCache(true).
+                        diskCacheStrategy(DiskCacheStrategy.NONE).
+                        error(R.mipmap.id_reverse).centerCrop().into(image);
+            }
+        });
     }
 
     @Override

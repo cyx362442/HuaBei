@@ -110,16 +110,23 @@ public class RenZhengActivity extends AppCompatActivity {
             mMsg.setText(getString(R.string.auditMsg));
             mBtnNext.setText("继续查看");
         }
-
-        initAccessTokenWithAkSk();
+        if(!getString(R.string.audited).equals(mAudit)){
+            initAccessTokenWithAkSk();
+        }
     }
 
     private void initAccessTokenWithAkSk() {
+        mRlLoad.setVisibility(View.VISIBLE);
         OCR.getInstance().initAccessTokenWithAkSk(new OnResultListener<AccessToken>() {
             @Override
             public void onResult(AccessToken result) {
-                String token = result.getAccessToken();
                 hasGotToken = true;
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mRlLoad.setVisibility(View.GONE);
+                    }
+                });
             }
 
             @Override
@@ -130,6 +137,7 @@ public class RenZhengActivity extends AppCompatActivity {
                     public void run() {
                         Toast.makeText(RenZhengActivity.this,
                                 "AK，SK方式获取token失败"+error.getMessage(),Toast.LENGTH_SHORT).show();
+                        mRlLoad.setVisibility(View.GONE);
                     }
                 });
             }
