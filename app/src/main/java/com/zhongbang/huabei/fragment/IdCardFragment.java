@@ -6,10 +6,10 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,45 +18,39 @@ import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
+import com.baidu.ocr.sdk.OCR;
+import com.baidu.ocr.sdk.OnResultListener;
+import com.baidu.ocr.sdk.exception.OCRError;
 import com.baidu.ocr.sdk.model.IDCardParams;
+import com.baidu.ocr.sdk.model.IDCardResult;
 import com.baidu.ocr.ui.camera.CameraActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.google.gson.Gson;
 import com.zhongbang.huabei.R;
 import com.zhongbang.huabei.app.RenZhengActivity;
-import com.zhongbang.huabei.bean.IDCard;
-import com.zhongbang.huabei.bean.IDCard_Reverse;
 import com.zhongbang.huabei.event.ID_Front;
-import com.zhongbang.huabei.event.StartAnim;
 import com.zhongbang.huabei.utils.FileUtil;
-import com.zhongbang.huabei.yunmai.ACameraActivity;
+import com.zhongbang.huabei.utils.ToastUtil;
 import com.zhongbang.huabei.yunmai.CameraManager;
-import com.zhongbang.huabei.yunmai.HttpUtil;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class IdCardFragment extends Fragment implements View.OnClickListener, PopupMenu.OnMenuItemClickListener {
-    private int REQUEST_CODE=1;
-    private static byte[] bytes;
-    private static String extension;
-    private final int IMPORT_CODE=1;
+    private int REQUEST_FRONT=100;
+    private int REQUEST_BAKC=200;
     private final int REQUEST_CODE_CAMERA=2;
-    private final int IDRESVERSE_CODE=3;
     public static final String action="idcard.scan";
     private ImageView mImgIDFront;
     private ImageView mImgIDReverse;
     private Intent mIntent;
     private PopupMenu mPopupMenu;
     private int mImageId;
-
+    private Handler mHandler=new Handler();
     public IdCardFragment() {
         // Required empty public constructor
     }
@@ -87,68 +81,94 @@ public class IdCardFragment extends Fragment implements View.OnClickListener, Po
         }
         Uri uri = data.getData();
         if(resultCode== Activity.RESULT_OK){
-            String result = data.getStringExtra("result");
             switch (requestCode) {
-                case IMPORT_CODE:
+                case 100:
                     if(uri==null){
                         return;
                     }
-                    try {
-                        String uriPath = getUriAbstractPath(uri);
-                        extension = getExtensionByPath(uriPath);
-                        InputStream is=getActivity().getContentResolver().openInputStream(uri);
-                        bytes = HttpUtil.Inputstream2byte(is);
-                        Log.d("bytes:  ", bytes.length+"");
-                        if(!(bytes.length>(1000*1024*5))){
-                            new MyAsynTask().execute();
-                        }else{
-                            Toast.makeText(getActivity(), "图片太大！！！", Toast.LENGTH_SHORT).show();
-                        }
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
+                    setImages(uri,mImgIDFront);
+                    break;
+                case 200:
+                    if(uri==null){
+                        return;
                     }
+                    setImages(uri,mImgIDReverse);
                     break;
                 case REQUEST_CODE_CAMERA:
-//                    setIDFront(result);
                         String contentType = data.getStringExtra(CameraActivity.KEY_CONTENT_TYPE);
-                        String filePath = FileUtil.getSaveFile(getString(R.string.idfront)).getAbsolutePath();
-                        Log.e("filePath=====",filePath);
                         if (!TextUtils.isEmpty(contentType)) {
                             if (CameraActivity.CONTENT_TYPE_ID_CARD_FRONT.equals(contentType)) {
-//                                recIDCard(IDCardParams.ID_CARD_SIDE_FRONT, filePath);
+                                String idfrontPath = FileUtil.getSaveFile(getString(R.string.idfront)).getAbsolutePath();
+                                recIDCard(IDCardParams.ID_CARD_SIDE_FRONT, idfrontPath);
                             } else if (CameraActivity.CONTENT_TYPE_ID_CARD_BACK.equals(contentType)) {
-//                                recIDCard(IDCardParams.ID_CARD_SIDE_BACK, filePath);
+                                String idbackPath = FileUtil.getSaveFile(getString(R.string.idback)).getAbsolutePath();
+                                recIDCard(IDCardParams.ID_CARD_SIDE_BACK, idbackPath);
                             }
                         }
-                    break;
-                case IDRESVERSE_CODE:
-                    setIDReverse(result);
                     break;
             }
         }
     }
-    //设置身份证反面
-    private void setIDReverse(String result) {
-        Gson gson = new Gson();
-        IDCard_Reverse cardReverse = gson.fromJson(result, IDCard_Reverse.class);
-        String valid_period = cardReverse.getData().getItem().getValid_period();
-        setIdData(mImgIDReverse,valid_period,"",getString(R.string.idreverse));
+
+    private void setImages(Uri uri, final ImageView view) {
+        final String uriPath = getUriAbstractPath(uri);
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                File file = new File(uriPath);
+                Glide.with(getActivity()).load(file).skipMemoryCache(true).
+                        diskCacheStrategy(DiskCacheStrategy.NONE).
+                        error(R.mipmap.id_reverse).centerCrop().into(view);
+            }
+        });
     }
-    //设置身份证正面
-    private void setIDFront(String reslut) {
-//        Gson gson = new Gson();
-//        IDCard idCard = gson.fromJson(reslut, IDCard.class);
-//        IDCard.DataBean.ItemBean itemBean = idCard.getData().getItem();
-//        setIdData(mImgIDFront,itemBean.getName(),itemBean.getCardno(),getString(R.string.idfront));
-        Log.e("resutlt=====",reslut+"a");
+
+    private void recIDCard(final String idCardSide, String filePath) {
+        IDCardParams param = new IDCardParams();
+        param.setImageFile(new File(filePath));
+        // 设置身份证正反面
+        param.setIdCardSide(idCardSide);
+        // 设置方向检测
+        param.setDetectDirection(true);
+        // 设置图像参数压缩质量0-100, 越大图像质量越好但是请求时间越长。 不设置则默认值为20
+        param.setImageQuality(20);
+
+        OCR.getInstance().recognizeIDCard(param, new OnResultListener<IDCardResult>() {
+            @Override
+            public void onResult(IDCardResult result) {
+                if (result != null) {
+                    if(idCardSide.equals(IDCardParams.ID_CARD_SIDE_FRONT)){
+                        setIdData(mImgIDFront,result.getName().getWords(),
+                                result.getIdNumber().getWords(),getString(R.string.idfront));
+                    }else if(idCardSide.equals(IDCardParams.ID_CARD_SIDE_BACK)){
+                        setIdData(mImgIDReverse,result.getSignDate().getWords()+"-"+result.getExpiryDate().getWords(),
+                                "",getString(R.string.idback));
+                    }
+                }
+            }
+            @Override
+            public void onError(final OCRError error) {
+               mHandler.post(new Runnable() {
+                   @Override
+                   public void run() {
+                       ToastUtil.showShort(getActivity(),error+"");
+                   }
+               });
+            }
+        });
     }
     //设置图片
-    private void setIdData(ImageView image,String str1,String str2,String imgName) {
+    private void setIdData(final ImageView image, String str1, String str2, final String imgName) {
         EventBus.getDefault().post(new ID_Front(str1,str2));
-        File file = new File(CameraManager.strDir, imgName);
-        Glide.with(this).load(file).skipMemoryCache(true).
-                diskCacheStrategy(DiskCacheStrategy.NONE).
-                error(R.mipmap.id_reverse).centerCrop().into(image);
+        final File file=FileUtil.getSaveFile(imgName);
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                Glide.with(getActivity()).load(file).skipMemoryCache(true).
+                        diskCacheStrategy(DiskCacheStrategy.NONE).
+                        error(R.mipmap.id_reverse).centerCrop().into(image);
+            }
+        });
     }
 
     @Override
@@ -168,24 +188,12 @@ public class IdCardFragment extends Fragment implements View.OnClickListener, Po
         mPopupMenu.setOnMenuItemClickListener(this);
     }
 
-    private void choiseImage() {
+    private void choiseImage(int code) {
         Intent intent=new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(intent, REQUEST_CODE);
+        startActivityForResult(intent, code);
     }
-
-    /**
-     * 根据路径获取文件扩展名
-     * @param path
-     */
-    private String getExtensionByPath(String path) {
-        if(path!=null){
-            return path.substring(path.lastIndexOf(".")+1);
-        }
-        return null;
-    }
-
 
     /**
      * 根据uri获取绝对路径
@@ -206,61 +214,28 @@ public class IdCardFragment extends Fragment implements View.OnClickListener, Po
     public boolean onMenuItemClick(MenuItem item) {
         if (mImageId == R.id.img_id_front) {//身份证正面
             if (item.getItemId() == R.id.photo) {//从相册获取
-                choiseImage();
+                choiseImage(REQUEST_FRONT);
             } else {//拍照获取
-//                mIntent = new Intent(getActivity(), ACameraActivity.class);
-//                mIntent.putExtra(getString(R.string.imageName), getString(R.string.idfront));
-//                startActivityForResult(mIntent, TAKEPHOTO_CODE);
                 if(checkTokenStatus()){
-                    Intent intent = new Intent(getActivity(), CameraActivity.class);
-                    intent.putExtra(CameraActivity.KEY_OUTPUT_FILE_PATH,
+                    mIntent = new Intent(getActivity(), CameraActivity.class);
+                    mIntent.putExtra(CameraActivity.KEY_OUTPUT_FILE_PATH,
                             FileUtil.getSaveFile(getString(R.string.idfront)).getAbsolutePath());
-                    intent.putExtra(CameraActivity.KEY_CONTENT_TYPE, CameraActivity.CONTENT_TYPE_ID_CARD_FRONT);
-                    startActivityForResult(intent, REQUEST_CODE_CAMERA);
+                    mIntent.putExtra(CameraActivity.KEY_CONTENT_TYPE, CameraActivity.CONTENT_TYPE_ID_CARD_FRONT);
+                    startActivityForResult(mIntent, REQUEST_CODE_CAMERA);
                 }
             }
         } else if (mImageId == R.id.img_id_reverse) {//身份证反面
             if (item.getItemId() == R.id.photo) {//从相册获取
-                choiseImage();
+                choiseImage(REQUEST_BAKC);
             } else {//拍照获取
-                mIntent = new Intent(getActivity(), ACameraActivity.class);
-                mIntent.putExtra(getString(R.string.imageName), getString(R.string.idreverse));
-                startActivityForResult(mIntent, IDRESVERSE_CODE);
+                mIntent = new Intent(getActivity(), CameraActivity.class);
+                mIntent.putExtra(CameraActivity.KEY_OUTPUT_FILE_PATH,
+                        FileUtil.getSaveFile(getString(R.string.idback)).getAbsolutePath());
+                mIntent.putExtra(CameraActivity.KEY_CONTENT_TYPE, CameraActivity.CONTENT_TYPE_ID_CARD_BACK);
+                startActivityForResult(mIntent, REQUEST_CODE_CAMERA);
             }
         }
         return false;
-    }
-
-    class MyAsynTask extends AsyncTask<Void, Void, String> {
-        @Override
-        protected void onPreExecute() {
-            EventBus.getDefault().post(new StartAnim(getString(R.string.idcommit)));
-        }
-        @Override
-        protected String doInBackground(Void... params) {
-            return startScan();
-        }
-        @Override
-        protected void onPostExecute(String result) {
-            if(result!=null){
-                handleResult(result);
-            }
-        }
-    }
-    /**
-     * 处理服务器返回的结果
-     * @param result
-     */
-    private void handleResult(String result) {
-        if(mImageId==R.id.img_id_front){
-            setIDFront(result);
-        }else if(mImageId==R.id.img_id_reverse){
-            setIDReverse(result);
-        }
-    }
-    public static String startScan(){
-        String xml = HttpUtil.getSendXML(action,extension);
-        return HttpUtil.send(xml,bytes);
     }
 
     private boolean checkTokenStatus() {

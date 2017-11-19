@@ -27,6 +27,7 @@ import com.zhongbang.huabei.http.UploadUtil;
 import com.zhongbang.huabei.http.VolleyResultListener;
 import com.zhongbang.huabei.region.RegionSelectActivity;
 import com.zhongbang.huabei.utils.DBCopyUtil;
+import com.zhongbang.huabei.utils.FileUtil;
 import com.zhongbang.huabei.utils.MD5Utils;
 import com.zhongbang.huabei.utils.ShapreUtis;
 import com.zhongbang.huabei.utils.ToastUtil;
@@ -184,8 +185,8 @@ public class BankActivity extends AppCompatActivity {
                     toGroupActivity();
                     return;
                 }
-                File file = new File(CameraManager.strDir, getString(R.string.bankfront));
-                File file2 = new File(CameraManager.strDir, getString(R.string.bankreverse));
+                File file = FileUtil.getSaveFile(getString(R.string.bankfront));
+                File file2=FileUtil.getSaveFile(getString(R.string.bankreverse));
                 String bankName = mEtBankName.getText().toString().trim();
                 String bankCard = mEtBankcard.getText().toString().trim();
                 String city = mEtCity.getText().toString().trim();

@@ -25,7 +25,6 @@ import com.zhongbang.huabei.fragment.IdCardFragment;
 import android.view.SurfaceHolder.Callback;
 
 import com.zhongbang.huabei.R;
-
 public class ACameraActivity extends AppCompatActivity implements Callback{
     protected static final String tag = "ACameraActivity";
     private CameraManager mCameraManager;
@@ -58,7 +57,7 @@ public class ACameraActivity extends AppCompatActivity implements Callback{
                                 String result=null;
                                 boolean isavilable= NetUtil.isNetworkConnectionActive(ACameraActivity.this);
                                 if(isavilable){
-                                    if(mImageName.equals(getString(R.string.idfront))||mImageName.equals(getString(R.string.idreverse))){//身份证
+                                    if(mImageName.equals(getString(R.string.idfront))||mImageName.equals(getString(R.string.idback))){//身份证
                                         result = Scan(IdCardFragment.action,jpegData,"jpg");
                                     }else if(mImageName.equals(getString(R.string.bankfront))||mImageName.equals(getString(R.string.bankreverse))){//银行卡
                                         result = Scan(BankFragment.action,jpegData,"jpg");

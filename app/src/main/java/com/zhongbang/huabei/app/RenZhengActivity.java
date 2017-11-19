@@ -33,6 +33,7 @@ import com.zhongbang.huabei.http.UploadUtil;
 import com.zhongbang.huabei.http.VolleyResultListener;
 import com.zhongbang.huabei.region.RegionSelectActivity;
 import com.zhongbang.huabei.utils.DBCopyUtil;
+import com.zhongbang.huabei.utils.FileUtil;
 import com.zhongbang.huabei.utils.MD5Utils;
 import com.zhongbang.huabei.utils.ShapreUtis;
 import com.zhongbang.huabei.utils.ToastUtil;
@@ -223,8 +224,8 @@ public class RenZhengActivity extends AppCompatActivity {
                     toBankActivity();
                     return;
                 }
-                File file = new File(CameraManager.strDir, getString(R.string.idfront));
-                File file2 = new File(CameraManager.strDir, getString(R.string.idreverse));
+                File file = FileUtil.getSaveFile(getString(R.string.idfront));
+                File file2=FileUtil.getSaveFile(getString(R.string.idback));
                 String name = mEtName.getText().toString().trim();
                 String idno = mEtIdcardfront.getText().toString().trim();
                 String idtime = mEtIdcardreverse.getText().toString().trim();
@@ -269,11 +270,16 @@ public class RenZhengActivity extends AppCompatActivity {
                                 String request = UploadUtil.post(urlCommit, mMap, mapFiles);
                                 JSONObject jsonObject = new JSONObject(request);
                                 String code = jsonObject.getString("code");
-                                String msg = jsonObject.getString("msg");
+                                final String msg = jsonObject.getString("msg");
                                 if (code.equals("1")) {
                                     toBankActivity();
                                 }
-                                ToastUtil.showShort(RenZhengActivity.this, msg);
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        ToastUtil.showShort(RenZhengActivity.this, msg);
+                                    }
+                                });
                             } catch (IOException e) {
                                 e.printStackTrace();
                             } catch (JSONException e) {

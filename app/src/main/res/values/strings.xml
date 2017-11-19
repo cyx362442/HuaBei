@@ -36,7 +36,7 @@
 
     <string name="imageName">图片名称</string>
     <string name="idfront">idfront.jpg</string>
-    <string name="idreverse">idreverse.jpg</string>
+    <string name="idback">idback.jpg</string>
     <string name="bankfront">bankfront.jpg</string>
     <string name="bankreverse">bankreverse.jpg</string>
     <string name="group">group.jpg</string>

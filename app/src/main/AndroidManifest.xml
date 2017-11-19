@@ -90,6 +90,11 @@
             android:name=".app.BankActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait">
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN"/>-->
+
+                <!--<category android:name="android.intent.category.LAUNCHER"/>-->
+            <!--</intent-filter>-->
         </activity>
         <activity
             android:name=".app.GroupPhotoActivity"
@@ -142,8 +147,6 @@
         <activity
             android:name=".app.main_center.OfficalActivity"
             android:screenOrientation="portrait">
-        </activity>
-        <activity android:name=".app.MessageCenterActivity">
         </activity>
         <activity android:name=".app.YijianfankuiActivity">
         </activity>

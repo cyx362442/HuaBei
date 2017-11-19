@@ -8,8 +8,8 @@ import android.os.Environment;
 import java.io.File;
 
 public class FileUtil {
+    public static  String path = Environment.getExternalStorageDirectory().getAbsolutePath()+"/zhongbang/";
     public static File getSaveFile(String fileName) {
-        String path = Environment.getExternalStorageDirectory().getAbsolutePath()+"/zhongbang/";
         File file1 = new File(path);
         if(!file1.exists()){
             file1.mkdir();
