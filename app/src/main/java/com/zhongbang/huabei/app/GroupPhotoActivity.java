@@ -21,6 +21,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.gson.Gson;
 import com.zhongbang.huabei.R;
 import com.zhongbang.huabei.bean.CommitGroup;
+import com.zhongbang.huabei.contract.Config;
 import com.zhongbang.huabei.event.FinishEvent;
 import com.zhongbang.huabei.fragment.dialog.GroupImageFragment;
 import com.zhongbang.huabei.http.DownHTTP;
@@ -61,7 +62,6 @@ public class GroupPhotoActivity extends AppCompatActivity {
     private final String urlCommit = "http://chinaqmf.cn:8088/ihuabei/app/user/submitHandCardImg.app";
     public static int TAKE_PHOTO_REQUEST_CODE = 100;
     public static final String strDir = Environment.getExternalStorageDirectory() + "/zhongbang/";
-    private String mAudit;
     private View mViewLoad;
 
     @Override
@@ -76,13 +76,13 @@ public class GroupPhotoActivity extends AppCompatActivity {
         ShapreUtis shapreUtis = ShapreUtis.getInstance(this);
         mAccount = shapreUtis.getAccount();
         String name = shapreUtis.getName();
-        mAudit = shapreUtis.getAudit();
-        if (!getString(R.string.unaudit).equals(mAudit)) {
+        if (!getString(R.string.unaudit).equals(Config.audit)) {
             Http_Group(name);
         }
-        if (getString(R.string.audited).equals(mAudit)) {
+        if (getString(R.string.audited).equals(Config.audit)) {
             mTvMsg.setText(getString(R.string.auditMsg));
             mBtnCommit.setText("返回首页");
+            mImgGroup.setEnabled(false);
         }
     }
 
@@ -140,7 +140,7 @@ public class GroupPhotoActivity extends AppCompatActivity {
                 fragment.show(getFragmentManager(), getString(R.string.groupimage));
                 break;
             case R.id.btn_commit:
-                if(getString(R.string.audited).equals(mAudit)){
+                if(getString(R.string.audited).equals(Config.audit)){
                     finish();
                     EventBus.getDefault().post(new FinishEvent());
                     return;

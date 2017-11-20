@@ -20,6 +20,7 @@ import com.baidu.ocr.ui.camera.CameraActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.zhongbang.huabei.R;
+import com.zhongbang.huabei.contract.Config;
 import com.zhongbang.huabei.event.Bank;
 import com.zhongbang.huabei.service.RecognizeService;
 import com.zhongbang.huabei.utils.FileUtil;
@@ -54,6 +55,10 @@ public class BankFragment extends Fragment implements View.OnClickListener
         View inflate = inflater.inflate(R.layout.fragment_bank, container, false);
         mImgBankfront = (ImageView) inflate.findViewById(R.id.img_bank_front);
         mImgBankreverse = (ImageView) inflate.findViewById(R.id.img_bank_reverse);
+        if(getString(R.string.audited).equals(Config.audit)){
+            mImgBankfront.setEnabled(false);
+            mImgBankreverse.setEnabled(false);
+        }
         mImgBankfront.setOnClickListener(this);
         mImgBankreverse.setOnClickListener(this);
         return inflate;

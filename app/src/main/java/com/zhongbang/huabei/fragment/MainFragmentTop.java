@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import com.zhongbang.huabei.R;
 import com.zhongbang.huabei.app.CollectionActivity;
 import com.zhongbang.huabei.app.ShareGoodsActivity;
+import com.zhongbang.huabei.contract.Config;
 import com.zhongbang.huabei.fragment.dialog.ConfirmDialogFragment;
 import com.zhongbang.huabei.utils.ShapreUtis;
 
@@ -22,7 +23,6 @@ import butterknife.Unbinder;
  */
 public class MainFragmentTop extends Fragment {
     Unbinder unbinder;
-    private String mAudit;
     private Intent mIntent;
 
     public MainFragmentTop() {
@@ -35,8 +35,6 @@ public class MainFragmentTop extends Fragment {
         // Inflate the layout for this fragment
         View inflate = inflater.inflate(R.layout.fragment_main_fragment_top, container, false);
         unbinder = ButterKnife.bind(this, inflate);
-        ShapreUtis shapreUtis = ShapreUtis.getInstance(getActivity());
-        mAudit = shapreUtis.getAudit();
         return inflate;
     }
 
@@ -62,7 +60,7 @@ public class MainFragmentTop extends Fragment {
     }
 
     private boolean checkAudit() {
-        if(!getString(R.string.audited).equals(mAudit)){
+        if(!getString(R.string.audited).equals(Config.audit)){
             ConfirmDialogFragment fragment = ConfirmDialogFragment.newInstance(getString(R.string.dialogMsg),false);
             fragment.show(getFragmentManager(),getString(R.string.dialog));
             return true;

@@ -1,10 +1,13 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-              android:orientation="vertical"
               android:background="@color/gray"
              tools:context="com.zhongbang.huabei.fragment.RenZhengFragment">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
             <FrameLayout
                 android:id="@+id/fragment_banner"
                 android:layout_width="match_parent"
@@ -39,6 +42,7 @@
                         android:layout_marginTop="@dimen/dimen10">
                     </FrameLayout>
                 </LinearLayout>
-
             </ScrollView>
-</LinearLayout>
+    </LinearLayout>
+    <include layout="@layout/load_item"></include>
+</RelativeLayout>

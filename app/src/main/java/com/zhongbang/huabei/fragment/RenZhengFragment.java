@@ -7,14 +7,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.zhongbang.huabei.R;
 import com.zhongbang.huabei.bean.User;
+import com.zhongbang.huabei.contract.Config;
 import com.zhongbang.huabei.http.DownHTTP;
 import com.zhongbang.huabei.http.VolleyResultListener;
 import com.zhongbang.huabei.utils.ShapreUtis;
+import com.zhongbang.huabei.utils.ToastUtil;
 
 import java.util.HashMap;
 
@@ -23,13 +26,12 @@ import java.util.HashMap;
  */
 public class RenZhengFragment extends Fragment {
 
-    public static String AUDIT="";
-
     private MapFragment mMapFragment;
     private ShapreUtis mShapreUtis;
     private MainFragmentTop mMainFragmentTop;
     private MainFragmentCenter mMainFragmentCenter;
     private MainFragmentBottom mMainFragmentBottom;
+    private RelativeLayout mRl;
 
     public RenZhengFragment() {
         // Required empty public constructor
@@ -43,6 +45,7 @@ public class RenZhengFragment extends Fragment {
         // Inflate the layout for this fragment
         View inflate = inflater.inflate(R.layout.fragment_ren_zheng, container, false);
         mShapreUtis = ShapreUtis.getInstance(getActivity());
+        mRl = (RelativeLayout) inflate.findViewById(R.id.rl_load);
         initFragment();
 
         Http_user();
@@ -64,21 +67,24 @@ public class RenZhengFragment extends Fragment {
     }
 
     private void Http_user() {
+        mRl.setVisibility(View.VISIBLE);
         String account = mShapreUtis.getAccount();
         map.put("username",account);
         DownHTTP.postVolley(urlUser, map, new VolleyResultListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                mRl.setVisibility(View.GONE);
+                ToastUtil.showShort(getActivity(),"加载失败");
             }
             @Override
             public void onResponse(String response) {
                 Gson gson = new Gson();
                 User[] users = gson.fromJson(response, User[].class);
                 User user = users[0];
-                AUDIT=user.getAudit();
                 mMapFragment.setName(user.getName());
-                mShapreUtis.setAudit(AUDIT);
+                Config.audit=user.getAudit();
                 mShapreUtis.setName(user.getName());
+                mRl.setVisibility(View.GONE);
             }
         });
     }

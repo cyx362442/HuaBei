@@ -128,7 +128,6 @@ public class LoginActivity extends AppCompatActivity{
             public void onErrorResponse(VolleyError error) {
 
             }
-
             @Override
             public void onResponse(String response) {
                 try {

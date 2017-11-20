@@ -28,6 +28,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.zhongbang.huabei.R;
 import com.zhongbang.huabei.app.RenZhengActivity;
+import com.zhongbang.huabei.contract.Config;
 import com.zhongbang.huabei.event.ID_Front;
 import com.zhongbang.huabei.utils.FileUtil;
 import com.zhongbang.huabei.utils.ToastUtil;
@@ -61,6 +62,10 @@ public class IdCardFragment extends Fragment implements View.OnClickListener, Po
         View inflate = inflater.inflate(R.layout.fragment_card, container, false);
         mImgIDFront = (ImageView) inflate.findViewById(R.id.img_id_front);
         mImgIDReverse = (ImageView) inflate.findViewById(R.id.img_id_reverse);
+        if(getString(R.string.audited).equals(Config.audit)){
+            mImgIDFront.setEnabled(false);
+            mImgIDReverse.setEnabled(false);
+        }
         mImgIDFront.setOnClickListener(this);
         mImgIDReverse.setOnClickListener(this);
         return inflate;

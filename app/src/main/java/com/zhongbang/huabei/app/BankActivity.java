@@ -18,6 +18,7 @@ import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.zhongbang.huabei.R;
 import com.zhongbang.huabei.bean.CommitBank;
+import com.zhongbang.huabei.contract.Config;
 import com.zhongbang.huabei.event.Bank;
 import com.zhongbang.huabei.event.FinishEvent;
 import com.zhongbang.huabei.event.StartAnim;
@@ -80,7 +81,6 @@ public class BankActivity extends AppCompatActivity {
     private final String urlBank = "http://chinaqmf.cn:8088/ihuabei/app/user/bankCardInfo.app";
     private final String urlCommit = "http://chinaqmf.cn:8088/ihuabei/app/user/submitBankCard.app";
     private BankFragment mBankFragment;
-    private String mAudit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,15 +92,18 @@ public class BankActivity extends AppCompatActivity {
         ShapreUtis shapreUtis = ShapreUtis.getInstance(this);
         mAccount = shapreUtis.getAccount();
         String name = shapreUtis.getName();
-        mAudit = shapreUtis.getAudit();
         mTvTitle.setText("银行卡认证");
         initFragment();
-        if (!getString(R.string.unaudit).equals(mAudit)) {
+        if (!getString(R.string.unaudit).equals(Config.audit)) {
             Http_Bank(name);
         }
-        if(getString(R.string.audited).equals(mAudit)){
+        if(getString(R.string.audited).equals(Config.audit)){
             mTvMsg.setText(getString(R.string.auditMsg));
             mBtnNext.setText("继续查看");
+            mEtBankName.setEnabled(false);
+            mEtBankcard.setEnabled(false);
+            mEtCity.setEnabled(false);
+            mEtZhihang.setEnabled(false);
         }
     }
     private void Http_Bank(String name) {
@@ -181,7 +184,7 @@ public class BankActivity extends AppCompatActivity {
                         REGION_REQUEST_CODE);
                 break;
             case R.id.btn_next:
-                if(getString(R.string.audited).equals(mAudit)){
+                if(getString(R.string.audited).equals(Config.audit)){
                     toGroupActivity();
                     return;
                 }

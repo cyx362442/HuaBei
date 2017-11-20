@@ -24,6 +24,7 @@ import com.baidu.ocr.sdk.model.AccessToken;
 import com.google.gson.Gson;
 import com.zhongbang.huabei.R;
 import com.zhongbang.huabei.bean.CommitUser;
+import com.zhongbang.huabei.contract.Config;
 import com.zhongbang.huabei.event.FinishEvent;
 import com.zhongbang.huabei.event.ID_Front;
 import com.zhongbang.huabei.event.StartAnim;
@@ -86,7 +87,6 @@ public class RenZhengActivity extends AppCompatActivity {
     private String mAccount;
     private HashMap<String, String> mMap;
     private IdCardFragment mIdCardFragment;
-    private String mAudit;
     public static boolean hasGotToken = false;
     private Handler mHandler=new Handler();
     @Override
@@ -98,19 +98,24 @@ public class RenZhengActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         mMap = new HashMap<>();
         ShapreUtis shapreUtis = ShapreUtis.getInstance(this);
-        mAudit = shapreUtis.getAudit();
         String name = shapreUtis.getName();
         mAccount = shapreUtis.getAccount();
         mTvTitle.setText("实名认证 ");
         initFragment();
-        if (!getString(R.string.unaudit).equals(mAudit)) {
+        if (!getString(R.string.unaudit).equals(Config.audit)) {
             Http_User(name);
         }
-        if(getString(R.string.audited).equals(mAudit)){
+        if(getString(R.string.audited).equals(Config.audit)){
             mMsg.setText(getString(R.string.auditMsg));
             mBtnNext.setText("继续查看");
+            mEtIdcardfront.setEnabled(false);
+            mEtIdcardreverse.setEnabled(false);
+            mEtName.setEnabled(false);
+            mEtAddress.setEnabled(false);
+            mEtCity.setEnabled(false);
+            mEtMerchant.setEnabled(false);
         }
-        if(!getString(R.string.audited).equals(mAudit)){
+        if(!getString(R.string.audited).equals(Config.audit)){
             initAccessTokenWithAkSk();
         }
     }
@@ -228,7 +233,7 @@ public class RenZhengActivity extends AppCompatActivity {
                         REGION_REQUEST_CODE);
                 break;
             case R.id.btn_next:
-                if(getString(R.string.audited).equals(mAudit)){
+                if(getString(R.string.audited).equals(Config.audit)){
                     toBankActivity();
                     return;
                 }

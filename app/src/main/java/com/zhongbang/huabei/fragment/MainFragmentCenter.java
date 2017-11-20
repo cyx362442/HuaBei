@@ -11,6 +11,7 @@ import com.zhongbang.huabei.R;
 import com.zhongbang.huabei.app.main_center.MyBillActivity;
 import com.zhongbang.huabei.app.main_center.MyComeinActivity;
 import com.zhongbang.huabei.app.main_center.OfficalActivity;
+import com.zhongbang.huabei.contract.Config;
 import com.zhongbang.huabei.fragment.dialog.ConfirmDialogFragment;
 import com.zhongbang.huabei.utils.ShapreUtis;
 import com.zhongbang.huabei.webview.WebActivity;
@@ -27,8 +28,6 @@ public class MainFragmentCenter extends Fragment {
     private Intent mIntent;
     private String mAccount;
     private String mUrl;
-    private String mAudit;
-
     public MainFragmentCenter() {
         // Required empty public constructor
     }
@@ -41,7 +40,6 @@ public class MainFragmentCenter extends Fragment {
         unbinder = ButterKnife.bind(this, inflate);
         ShapreUtis shapreUtis = ShapreUtis.getInstance(getActivity());
         mAccount = shapreUtis.getAccount();
-        mAudit = shapreUtis.getAudit();
         return inflate;
     }
 
@@ -90,7 +88,7 @@ public class MainFragmentCenter extends Fragment {
     }
 
     private boolean checkAudit() {
-        if(!getString(R.string.audited).equals(mAudit)){
+        if(!getString(R.string.audited).equals(Config.audit)){
             ConfirmDialogFragment fragment = ConfirmDialogFragment.newInstance(getString(R.string.dialogMsg),false);
             fragment.show(getFragmentManager(),getString(R.string.dialog));
             return true;

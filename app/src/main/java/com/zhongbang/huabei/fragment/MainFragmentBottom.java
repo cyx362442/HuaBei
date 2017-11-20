@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.zhongbang.huabei.R;
+import com.zhongbang.huabei.contract.Config;
 import com.zhongbang.huabei.fragment.dialog.ConfirmDialogFragment;
 import com.zhongbang.huabei.utils.ShapreUtis;
 import com.zhongbang.huabei.webview.WebActivity;
@@ -23,7 +24,6 @@ import butterknife.Unbinder;
 public class MainFragmentBottom extends Fragment {
     Unbinder unbinder;
     private String mUrl;
-    private String mAudit;
 
     public MainFragmentBottom() {
         // Required empty public constructor
@@ -35,8 +35,6 @@ public class MainFragmentBottom extends Fragment {
         // Inflate the layout for this fragment
         View inflate = inflater.inflate(R.layout.fragment_main_fragment_bottom, container, false);
         unbinder = ButterKnife.bind(this, inflate);
-        ShapreUtis shapreUtis = ShapreUtis.getInstance(getActivity());
-        mAudit = shapreUtis.getAudit();
         return inflate;
     }
 
@@ -84,7 +82,7 @@ public class MainFragmentBottom extends Fragment {
         startActivity(intent);
     }
     private boolean checkAudit() {
-        if(!getString(R.string.audited).equals(mAudit)){
+        if(!getString(R.string.audited).equals(Config.audit)){
             ConfirmDialogFragment fragment = ConfirmDialogFragment.newInstance(getString(R.string.dialogMsg),false);
             fragment.show(getFragmentManager(),getString(R.string.dialog));
             return true;
