@@ -1,9 +1,12 @@
 package com.zhongbang.huabei.app;
 
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v4.app.FragmentTabHost;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -13,6 +16,7 @@ import com.zhongbang.huabei.R;
 import com.zhongbang.huabei.fragment.NotificationFragment;
 import com.zhongbang.huabei.fragment.RenZhengFragment;
 import com.zhongbang.huabei.fragment.ServerFragment;
+import com.zhongbang.huabei.utils.ToastUtil;
 
 public class MainActivity extends AppCompatActivity{
     private Class[]fragment={RenZhengFragment.class,
@@ -24,6 +28,7 @@ public class MainActivity extends AppCompatActivity{
     R.drawable.selector_server};
     private FragmentTabHost mTabHost;
     private boolean isClick=false;
+    private Handler mHandler=new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,5 +68,25 @@ public class MainActivity extends AppCompatActivity{
                 }
             });
         }
+    }
+
+    int count=0;
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK ){
+            if(count<=0){
+                ToastUtil.showShort(this,"再次点击将退出应用");
+                count++;
+                mHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        count=0;
+                    }
+                },2000);
+            }else{
+                finish();
+            }
+        }
+        return false;
     }
 }

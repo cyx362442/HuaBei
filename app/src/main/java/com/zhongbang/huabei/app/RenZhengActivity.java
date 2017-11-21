@@ -321,6 +321,8 @@ public class RenZhengActivity extends AppCompatActivity {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
         // 释放内存资源
-        OCR.getInstance().release();
+        if(!getString(R.string.audited).equals(Config.audit)){
+            OCR.getInstance().release();
+        }
     }
 }

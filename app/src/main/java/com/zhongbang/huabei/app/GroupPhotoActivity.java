@@ -7,12 +7,12 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
@@ -56,6 +56,8 @@ public class GroupPhotoActivity extends AppCompatActivity {
     TextView mTvMsg;
     @BindView(R.id.btn_commit)
     Button mBtnCommit;
+    @BindView(R.id.rl_group)
+    RelativeLayout mRlGroup;
     private String mAccount;
 
     private final String urlGroup = "http://chinaqmf.cn:8088/ihuabei/app/user/securityVerifyInfo.app";
@@ -82,7 +84,7 @@ public class GroupPhotoActivity extends AppCompatActivity {
         if (getString(R.string.audited).equals(Config.audit)) {
             mTvMsg.setText(getString(R.string.auditMsg));
             mBtnCommit.setText("返回首页");
-            mImgGroup.setEnabled(false);
+            mRlGroup.setEnabled(false);
         }
     }
 
@@ -98,6 +100,7 @@ public class GroupPhotoActivity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 mViewLoad.setVisibility(View.GONE);
             }
+
             @Override
             public void onResponse(String response) {
                 Gson gson = new Gson();
@@ -140,7 +143,7 @@ public class GroupPhotoActivity extends AppCompatActivity {
                 fragment.show(getFragmentManager(), getString(R.string.groupimage));
                 break;
             case R.id.btn_commit:
-                if(getString(R.string.audited).equals(Config.audit)){
+                if (getString(R.string.audited).equals(Config.audit)) {
                     finish();
                     EventBus.getDefault().post(new FinishEvent());
                     return;

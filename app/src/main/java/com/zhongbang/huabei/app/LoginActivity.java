@@ -216,6 +216,7 @@ public class LoginActivity extends AppCompatActivity{
                     mShapreUtis.setAccount(account);
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(intent);
+                    finish();
                 }
                 mRlLoad.setVisibility(View.GONE);
                 ToastUtil.showShort(LoginActivity.this,response);
